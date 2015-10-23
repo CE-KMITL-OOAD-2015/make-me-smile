@@ -13,6 +13,7 @@ public class Story {
     private int placeId;
     private String time;
     private int privacy;
+    private User user;
     public Story(String des,int privacy,String fbid,Location place) {
         this.des = des;
         this.placeId = place.getId();
@@ -21,7 +22,7 @@ public class Story {
         this.place = place;
     }
     public Story(int storyId,String des,int smile, int sad,int placeId
-            ,String time,int privacy,String fbid,Location place){
+            ,String time,int privacy,String fbid,Location place, User user){
         this.storyId = storyId;
         this.des = des;
         this.smile = smile;
@@ -31,6 +32,7 @@ public class Story {
         this.privacy = privacy;
         this.fbid = fbid;
         this.place = place;
+        this.user = user;
     }
     public int getStoryId()
     {
@@ -60,5 +62,8 @@ public class Story {
     public Location getPlace()
     {
         return place;
+    }
+    public  User getUser(){
+        return user;
     }
 }

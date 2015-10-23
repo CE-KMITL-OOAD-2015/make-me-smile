@@ -61,11 +61,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/smile"/>
+            <TextView
+                android:id="@+id/smilecount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="16sp"/>
             <Button
                 android:id="@+id/sad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sad"/>
+            <TextView
+                android:id="@+id/sadcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="16sp"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 public class Feed extends ListActivity {
     private Button mButtonShare;
@@ -37,7 +39,15 @@ public class Feed extends ListActivity {
                     // JSONObject jsonObject = new jsonObject("{"test)
                     //styList = getStoryList(test);
                     styList2 = getStoryList(test);
-                    showStory(styList2);
+                    System.out.println("Check");
+                    //showStory(styList2);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showStory(styList2);
+                        }
+                    });
+                    System.out.println("Check2");
                     for (Story it : styList2) {
                         System.out.println(it.getDes());
                     }
@@ -46,6 +56,9 @@ public class Feed extends ListActivity {
                 }
             }
         }).start();
+
+
+
         //bindWidget();
         //setWidgetEventListener();
         //helper = new ShareHelper(this);
@@ -100,12 +113,15 @@ public class Feed extends ListActivity {
         try {
             JSONArray jarr = new JSONArray();
             JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
+            System.out.println(response);
             JSONArray jArray = jObject.getJSONArray("myArray");
             int i = 0;
             while (i < jArray.length()) {
                 JSONObject job = jArray.getJSONObject(i);
                 JSONObject job2 = new JSONObject(job.get("place").toString());
+                JSONObject job3 = new JSONObject(job.get("user").toString());
                 Location loc = new Location(job2.getInt("id"), job2.getString("name"), job2.get("address").toString());
+                User user = new User(job3.getString("fbid"), job3.getString("name"), job3.getInt("isPost"));
                 Story story = new Story(job.getInt("storyId")
                         , job.getString("des")
                         , job.getInt("smile")
@@ -115,6 +131,7 @@ public class Feed extends ListActivity {
                         , job.getInt("privacy")
                         , job.getString("fbid")
                         , loc
+                        , user
                 );
                 styList.add(story);
                 i++;
@@ -159,12 +176,13 @@ public class Feed extends ListActivity {
             System.out.println(str.get(i)+"str");
             i++;
         }*/
-
+        System.out.println("Check3");
         StoryAdapter adapter = new StoryAdapter(this,R.layout.listtest, listValues);
         //ArrayAdapter<String> myAdapter = new ArrayAdapter <String>(this,
          //       R.layout.listtest, R.id.listText, listValues);
+        System.out.println("Check4");
         setListAdapter(adapter);
-
+        System.out.println("Check5");
         //setListAdapter(adapter);
 
        // SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item, cursor, COLUMNS, VIEWS);
@@ -237,6 +255,21 @@ public class Feed extends ListActivity {
             }
         }).start();
         setContentView(R.layout.activity_feed);
+        mButtonShare = (Button)findViewById(R.id.button1_1);
+        mButtonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Share.class));
+                finish();
+            }
+        });
+        mButtonLogin = (Button)findViewById(R.id.button2_3);
+        mButtonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
     }
 
 

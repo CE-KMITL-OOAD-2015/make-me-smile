@@ -3,18 +3,18 @@ package com.toocomplicated.mademesmile;
  * Created by User on 15/10/2558.
  */
 public class User {
-    private int id;
+    private String fbid;
     private String name;
     private int isPost;
-    public User(int id, String name)
+    public User(String fbid, String name)
     {
-        this.id = id;
+        this.fbid = fbid;
         this.name = name;
         this.isPost = 0;
     }
-    public User(int id,String name,int isPost)
+    public User(String fbid,String name,int isPost)
     {
-        this.id = id;
+        this.fbid = fbid;
         this.name = name;
         this.isPost = isPost;
     }
@@ -26,9 +26,9 @@ public class User {
     {
         this.name = name;
     }
-    public int getId()
+    public String getId()
     {
-        return id;
+        return fbid;
     }
     public int getIsPost()
     {

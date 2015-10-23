@@ -37,7 +37,7 @@ public class Login extends ActionBarActivity {
 
     private TextView userName;
     private ProfilePictureView profilePicture;
-    private String name;
+    public static String name;
     public static String id;
     private final String USER_AGENT = "Mozilla/5.0";
    // private Button postLinkButton;
