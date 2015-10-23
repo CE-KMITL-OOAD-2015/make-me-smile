@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#ffa000</item>
+        <item name="colorPrimaryDark">#b24d05</item>
+        <item name="colorAccent">#ff4a35</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="Buttonv1" parent="android:Widget.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/orange</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_margin">2sp</item>
+    </style>
+
+</resources>
