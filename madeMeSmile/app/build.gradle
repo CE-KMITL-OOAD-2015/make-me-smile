@@ -27,4 +27,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.4.0'
+    compile 'com.android.support:recyclerview-v7:+'
+
 }

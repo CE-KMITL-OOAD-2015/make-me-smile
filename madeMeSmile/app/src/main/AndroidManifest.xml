@@ -24,7 +24,7 @@
             android:label="@string/title_activity_share" >
         </activity>
         <activity
-            android:name="com.toocomplicated.mademesmile.Feed"
+            android:name="com.toocomplicated.mademesmile.FeedList"
             android:label="@string/app_name">
         </activity>
         <activity

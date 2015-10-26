@@ -152,7 +152,6 @@ public class StoryAdapter extends ArrayAdapter<Story> {
                         , job.getString("des")
                         , job.getInt("smile")
                         , job.getInt("sad")
-                        , job.getInt("placeId")
                         , job.getString("time")
                         , job.getInt("privacy")
                         , job.getString("fbid")

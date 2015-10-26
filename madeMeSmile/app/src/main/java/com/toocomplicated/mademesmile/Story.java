@@ -10,24 +10,21 @@ public class Story {
     private String fbid;
     private int smile;
     private int sad;
-    private int placeId;
     private String time;
     private int privacy;
     private User user;
     public Story(String des,int privacy,String fbid,Location place) {
         this.des = des;
-        this.placeId = place.getId();
         this.privacy = privacy;
         this.fbid = fbid;
         this.place = place;
     }
-    public Story(int storyId,String des,int smile, int sad,int placeId
+    public Story(int storyId,String des,int smile, int sad
             ,String time,int privacy,String fbid,Location place, User user){
         this.storyId = storyId;
         this.des = des;
         this.smile = smile;
         this.sad = sad;
-        this.placeId = placeId;
         this.time = time;
         this.privacy = privacy;
         this.fbid = fbid;
@@ -55,7 +52,6 @@ public class Story {
     public void setSmile() { smile++;}
     public int getSad(){ return sad;}
     public void setSad() { sad++;}
-    public int getPlaceId(){return placeId;}
     public String getTime() {return time;}
     public int getPrivacy(){return privacy;}
     public void setPrivacy(int privacy){this.privacy = privacy;}

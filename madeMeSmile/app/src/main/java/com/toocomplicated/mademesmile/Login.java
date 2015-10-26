@@ -111,7 +111,7 @@ public class Login extends ActionBarActivity {
                                     }
                                 }
                             }).start();
-                            startActivity(new Intent(getApplicationContext(), Feed.class));
+                            startActivity(new Intent(getApplicationContext(), FeedList.class));
                             finish();
                         }
 

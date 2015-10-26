@@ -130,7 +130,6 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
                         , job.getString("des")
                         , job.getInt("smile")
                         , job.getInt("sad")
-                        , job.getInt("placeId")
                         , job.getString("time")
                         , job.getInt("privacy")
                         , job.getString("fbid")

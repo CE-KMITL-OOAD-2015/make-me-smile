@@ -65,7 +65,7 @@ public class Share extends AppCompatActivity {
         mButtonCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Feed.class));
+                startActivity(new Intent(getApplicationContext(),FeedList.class));
                 finish();
             }
         });
@@ -83,7 +83,7 @@ public class Share extends AppCompatActivity {
                 } catch (Exception e) {
                 } finally {
                     helper.close();
-                    startActivity(new Intent(getApplicationContext(), Feed.class));
+                    startActivity(new Intent(getApplicationContext(), FeedList.class));
                     finish();
                 }
             }
