@@ -97,8 +97,8 @@ public class Share extends AppCompatActivity {
 
 
     private void addStory(String str) {
-        //  HttpURLConnectionExample http = new HttpURLConnectionExample();
-        sq = "privacy=0&des="+ str +"&fbid="+ fbid +"&locationId=1&locationName=ECC&address=LADKRABANG";
+        //  HttpURLConnectionExample httpyk = new HttpURLConnectionExample();
+        sq = "privacy=0&des="+ str +"&fbid="+ fbid +"&locationId=1&locationName=ECC&address=LADKRABANG&img=1234";
     }
 
     private void sendStory() {

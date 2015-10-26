@@ -17,12 +17,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.logging.Handler;
 
-public class Feed extends ListActivity {
+public class Feed extends ListActivity implements StoryAdapter.customButtonListener {
     private Button mButtonShare;
     private Button mButtonLogin;
+    private Button mButtomSmile;
     private ShareHelper helper;
     private ArrayList<Story> styList2;
     private String test = "";
+    private StoryAdapter adapter;
     private ListView listViews;
    // private ProfilePictureView profilePicture;
 
@@ -35,7 +37,7 @@ public class Feed extends ListActivity {
             public void run() {
                 try {
 
-                    test = h.sendPost("feed", "d");
+                    test = h.sendPost("feed", "fbid="+ Login.id);
                     // JSONObject jsonObject = new jsonObject("{"test)
                     //styList = getStoryList(test);
                     styList2 = getStoryList(test);
@@ -108,6 +110,8 @@ public class Feed extends ListActivity {
         });
     }
 
+
+
     public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
@@ -177,12 +181,12 @@ public class Feed extends ListActivity {
             i++;
         }*/
         System.out.println("Check3");
-        StoryAdapter adapter = new StoryAdapter(this,R.layout.listtest, listValues);
+        adapter = new StoryAdapter(this,R.layout.listtest, listValues);
         //ArrayAdapter<String> myAdapter = new ArrayAdapter <String>(this,
          //       R.layout.listtest, R.id.listText, listValues);
-        System.out.println("Check4");
+        adapter.setCustomButtonListner(Feed.this);
         setListAdapter(adapter);
-        System.out.println("Check5");
+        //adapter.notifyDataSetChanged();
         //setListAdapter(adapter);
 
        // SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item, cursor, COLUMNS, VIEWS);
@@ -207,8 +211,29 @@ public class Feed extends ListActivity {
 
     }
 
-
-
+   /* @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        styList2.clear();
+        final HttpURLConnectionExample  h = new HttpURLConnectionExample();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showStory(styList2);
+                        }
+                    });
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                }
+            }
+        }).start();
+        adapter.notifyDataSetChanged();
+        adapter.setNotifyOnChange(true);
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -232,6 +257,7 @@ public class Feed extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -245,10 +271,13 @@ public class Feed extends ListActivity {
                     // JSONObject jsonObject = new jsonObject("{"test)
                     //styList = getStoryList(test);
                     styList2 = getStoryList(test);
-                    showStory(styList2);
-                    for (Story it : styList2) {
-                        System.out.println(it.getDes());
-                    }
+                    //showStory(styList2);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showStory(styList2);
+                        }
+                    });
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                 }
@@ -273,4 +302,27 @@ public class Feed extends ListActivity {
     }
 
 
+    @Override
+    public void onButtonClickListener(int position, final Story value) {
+        final HttpURLConnectionExample  h = new HttpURLConnectionExample();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    test = h.sendPost("feed", "fbid="+ Login.id);
+                    styList2 = getStoryList(test);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showStory(styList2);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                }
+            }
+        }).start();
+        System.out.println("On click");
+    }
 }
