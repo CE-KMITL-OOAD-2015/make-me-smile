@@ -15,6 +15,8 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private List<Story> feedItemList;
     private Context mContext;
+    private int presssmile = 0;
+    private int presssad = 0;
 
     public RecyclerAdapter(Context context, List<Story> feedItemList) {
         this.feedItemList = feedItemList;
@@ -31,8 +33,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
-        Story feedItem = feedItemList.get(position);
+    public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        final Story feedItem = feedItemList.get(position);
 
         holder.txtView.setText(feedItem.getDes());
         holder.txtLocate.setText(feedItem.getPlace().getName());
@@ -40,7 +42,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         holder.proFile.setProfileId(feedItem.getFbid());
         holder.smileCount.setText("" + feedItem.getSmile());
         holder.sadCount.setText("" + feedItem.getSad());
+        holder.smile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final HttpURLConnectionExample h = new HttpURLConnectionExample();
+                try {
+                    h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=0");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                }
+                Story item = feedItemList.get(position);
+                if(presssad != 1){
+                    presssmile = item.setSmile(presssmile);
+                }
+                feedItemList.set(position, item);
+                notifyItemChanged(position);
 
+            }
+        });
+        holder.sad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final HttpURLConnectionExample h = new HttpURLConnectionExample();
+                try {
+                    h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=1");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                }
+                Story item = feedItemList.get(position);
+                if(presssmile != 1){
+                      presssad = item.setSad(presssad);
+                }
+                feedItemList.set(position, item);
+                notifyItemChanged(position);
+
+
+            }
+        });
     }
 
     @Override

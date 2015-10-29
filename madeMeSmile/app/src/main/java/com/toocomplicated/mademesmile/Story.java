@@ -13,6 +13,7 @@ public class Story {
     private String time;
     private int privacy;
     private User user;
+    private int arrive = 0;
     public Story(String des,int privacy,String fbid,Location place) {
         this.des = des;
         this.privacy = privacy;
@@ -49,9 +50,31 @@ public class Story {
     public String getFbid(){
         return fbid;
     }
-    public void setSmile() { smile++;}
+    public int setSmile(int check) {
+        if(check == 0 ){
+            smile++;
+            check++;
+            return check;
+        }
+        else {
+            smile--;
+            check--;
+            return check;
+        }
+    }
     public int getSad(){ return sad;}
-    public void setSad() { sad++;}
+    public int setSad(int check) {
+        if(check == 0 ){
+            sad++;
+            check++;
+            return check;
+        }
+        else {
+            sad--;
+            check--;
+            return check;
+        }
+    }
     public String getTime() {return time;}
     public int getPrivacy(){return privacy;}
     public void setPrivacy(int privacy){this.privacy = privacy;}
