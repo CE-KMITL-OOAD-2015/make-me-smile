@@ -69,6 +69,14 @@ public class Share extends AppCompatActivity {
                 finish();
             }
         });
+        Button mButtonLocation = (Button)findViewById(R.id.buttontag);
+        mButtonLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LocationList.class));
+                finish();
+            }
+        });
         final EditText mEditText = (EditText)findViewById(R.id.edittext);
         Button mButtonShare = (Button) findViewById(R.id.buttonshare); // share button
         mButtonShare.setOnClickListener(new View.OnClickListener() {

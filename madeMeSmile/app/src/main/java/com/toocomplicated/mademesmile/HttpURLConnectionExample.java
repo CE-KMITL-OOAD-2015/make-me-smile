@@ -118,6 +118,7 @@ public class HttpURLConnectionExample {
                 );
                 storyList.add(story);
             }*/
+        urlConn.disconnect();
         return response.toString();
 
 

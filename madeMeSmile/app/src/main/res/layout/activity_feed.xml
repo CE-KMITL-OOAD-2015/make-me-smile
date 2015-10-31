@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -64,11 +65,16 @@
             android:text="Logout"/>
 
     </LinearLayout>
-    <view
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <view
         android:id="@+id/recycler_view"
         class="android.support.v7.widget.RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private Context mContext;
     private int presssmile = 0;
     private int presssad = 0;
+    private int check = 0;
 
     public RecyclerAdapter(Context context, List<Story> feedItemList) {
         this.feedItemList = feedItemList;
@@ -46,37 +49,57 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             @Override
             public void onClick(View v) {
                 final HttpURLConnectionExample h = new HttpURLConnectionExample();
-                try {
-                    h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=0");
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                }
-                Story item = feedItemList.get(position);
-                if(presssad != 1){
-                    presssmile = item.setSmile(presssmile);
-                }
-                feedItemList.set(position, item);
-                notifyItemChanged(position);
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
+                            check = Integer.parseInt(h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=0"));
+                            System.out.println("check " + check);
+                            Story item = feedItemList.get(position);
+                            item.setSmile(check);
+                            feedItemList.set(position, item);
+
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                        }
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                notifyItemChanged(position);
             }
         });
         holder.sad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final HttpURLConnectionExample h = new HttpURLConnectionExample();
+               Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            check = Integer.parseInt(h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=1"));
+                            System.out.println("check " + check);
+                            Story item = feedItemList.get(position);
+                            item.setSad(check);
+                            feedItemList.set(position, item);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                        }
+                    }
+                });
+                t.start();
                 try {
-                    h.sendPost("addFeeling", "storyId=" + feedItem.getStoryId() + "&fbid=" + Login.id + "&mode=1");
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                Story item = feedItemList.get(position);
-                if(presssmile != 1){
-                      presssad = item.setSad(presssad);
-                }
-                feedItemList.set(position, item);
                 notifyItemChanged(position);
-
-
             }
         });
     }

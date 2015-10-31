@@ -50,30 +50,12 @@ public class Story {
     public String getFbid(){
         return fbid;
     }
-    public int setSmile(int check) {
-        if(check == 0 ){
-            smile++;
-            check++;
-            return check;
-        }
-        else {
-            smile--;
-            check--;
-            return check;
-        }
+    public void setSmile(int check) {
+        smile = smile+check;
     }
     public int getSad(){ return sad;}
-    public int setSad(int check) {
-        if(check == 0 ){
-            sad++;
-            check++;
-            return check;
-        }
-        else {
-            sad--;
-            check--;
-            return check;
-        }
+    public void setSad(int check) {
+        sad = sad+check;
     }
     public String getTime() {return time;}
     public int getPrivacy(){return privacy;}

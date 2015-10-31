@@ -3,6 +3,7 @@ package com.toocomplicated.mademesmile;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +21,10 @@ import java.util.List;
 /**
  * Created by Win8.1 on 26/10/2558.
  */
-public class FeedList extends AppCompatActivity {
+public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<Story> feedList;
     private RecyclerView mRecycler;
+    private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerAdapter adapter;
     private Button mButtonShare;
     private Button mButtonLogin;
@@ -35,6 +37,8 @@ public class FeedList extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
         mRecycler = (RecyclerView)findViewById(R.id.recycler_view);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mSwipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+        mSwipeRefresh.setOnRefreshListener(this);
         bar = (ProgressBar)findViewById(R.id.progress_bar);
         bar.setVisibility(View.VISIBLE);
         mButtonShare = (Button)findViewById(R.id.button1_1);
@@ -52,6 +56,12 @@ public class FeedList extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
+        new AsyncHttpTask().execute();
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(FeedList.this, "Refresh Feed...", Toast.LENGTH_SHORT).show();
         new AsyncHttpTask().execute();
     }
 
@@ -82,6 +92,9 @@ public class FeedList extends AppCompatActivity {
             bar.setVisibility(View.GONE);
             if(integer == 1){
                 adapter = new RecyclerAdapter(FeedList.this, feedList);
+                if(mSwipeRefresh.isRefreshing()){
+                    mSwipeRefresh.setRefreshing(false);
+                }
                 mRecycler.setAdapter(adapter);
                 System.out.println("Test");
             }

@@ -34,9 +34,11 @@ public class Login extends ActionBarActivity {
 
     CallbackManager callbackManager;
     ProfileTracker profileTracker;
-
+    public static final String PREFS_NAME = "MyPrefsFile";
     private TextView userName;
     private ProfilePictureView profilePicture;
+    private int data = 0;
+    public static boolean login = false;
     public static String name;
     public static String id;
     private final String USER_AGENT = "Mozilla/5.0";
@@ -85,11 +87,10 @@ public class Login extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        ComponentName prev = this.getCallingActivity();
-        SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = prefs.edit();
-            FacebookSdk.sdkInitialize(this.getApplicationContext());
 
+       /* SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();*/
+            FacebookSdk.sdkInitialize(this.getApplicationContext());
             callbackManager = CallbackManager.Factory.create();
 
             LoginManager.getInstance().registerCallback(callbackManager,
@@ -98,7 +99,7 @@ public class Login extends ActionBarActivity {
                         public void onSuccess(LoginResult loginResult) {
                             //handlePendingAction();
                             updateUI();
-                            editor.putString("nameKey",name);
+                            //editor.putString("nameKey",name);
                             final HttpURLConnectionExample h = new HttpURLConnectionExample();
                             new Thread(new Runnable() {
                                 @Override
@@ -111,6 +112,10 @@ public class Login extends ActionBarActivity {
                                     }
                                 }
                             }).start();
+                            SharedPreferences settings = getSharedPreferences(Login.PREFS_NAME, 0); // 0 - for private mode
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putBoolean("hasLoggedIn", true);
+                            editor.commit();
                             startActivity(new Intent(getApplicationContext(), FeedList.class));
                             finish();
                         }
