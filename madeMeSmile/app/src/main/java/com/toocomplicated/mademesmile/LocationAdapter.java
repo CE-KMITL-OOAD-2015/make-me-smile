@@ -40,4 +40,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocateViewHolder> {
     public int getItemCount() {
         return (null != locateItemList ? locateItemList.size() : 0);
     }
+
+    public Location getLocation(int position){
+        return locateItemList.get(position);
+    }
 }

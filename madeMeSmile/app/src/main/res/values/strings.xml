@@ -16,4 +16,8 @@
     <string name="login">Login</string>
     <string name="smile">Smile</string>
     <string name="sad">Sad</string>
+    <string name="createloc">Do you want to create location?</string>
+    <string name="createpop">Create location</string>
+    <string name="namelocation">Location Name</string>
+    <string name="addresslocation">Location Address</string>
 </resources>
