@@ -45,7 +45,8 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
         mButtonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Share.class));
+                Intent intent = new Intent(getApplicationContext(), Share.class);
+                startActivity(intent);
                 finish();
             }
         });

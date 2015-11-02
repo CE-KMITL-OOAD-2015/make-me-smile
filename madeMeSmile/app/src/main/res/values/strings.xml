@@ -8,7 +8,7 @@
     <string name="search">Search</string>
     <string name="popular">Most Popular</string>
     <string name="news_feed">News Feed</string>
-    <string name="cancle">Cancle</string>
+    <string name="cancle">Cancel</string>
     <string name="hint_share">Write your story...</string>
     <string name="photo">Photo</string>
     <string name="tag">Tag Location</string>
@@ -16,7 +16,7 @@
     <string name="login">Login</string>
     <string name="smile">Smile</string>
     <string name="sad">Sad</string>
-    <string name="createloc">Do you want to create location?</string>
+    <string name="createloc">Not found!\nDo you want to create location?</string>
     <string name="createpop">Create location</string>
     <string name="namelocation">Location Name</string>
     <string name="addresslocation">Location Address</string>

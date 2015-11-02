@@ -2,8 +2,10 @@ package com.toocomplicated.mademesmile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +21,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +60,7 @@ public class LocationList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
+        location = new Location(0,"","");
         linearLayout = (LinearLayout)findViewById(R.id.linear_locate);
         mRecycler = (RecyclerView)findViewById(R.id.recycler_viewlocate);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -64,7 +69,15 @@ public class LocationList extends AppCompatActivity {
             public void onClick(View view, int position) {
                 location = adapter.getLocation(position);
                 locationName = location.getName();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("LocationId",location.getId());
+                editor.putString("LocationName",location.getName());
+                editor.putString("LocationAddress",location.getAddress());
+                editor.apply();
+
                 Toast.makeText(LocationList.this, "Choose location "+locationName , Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
@@ -76,7 +89,12 @@ public class LocationList extends AppCompatActivity {
         mButtonCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Share.class));
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+               /* editor.putInt("LocationId",location.getId());
+                editor.putString("LocationName",location.getName());
+                editor.putString("LocationAddress",location.getAddress());
+                editor.apply();*/
                 finish();
             }
         });
@@ -125,13 +143,16 @@ public class LocationList extends AppCompatActivity {
             }
             else{
                 Toast.makeText(LocationList.this, "No location found!", Toast.LENGTH_LONG).show();
-
+                adapter = new LocationAdapter(LocationList.this, locationList);
+                mRecycler.setAdapter(adapter);
                 layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
                 ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.popuplocation,null);
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 popupWindow = new PopupWindow(container,400,150,true);
                 popupWindow.showAtLocation(linearLayout, Gravity.CENTER,0,0);
+                TextView mTextViewloc = (TextView)container.findViewById(R.id.viewalert);
+                mTextViewloc.setText(mEditText.getText() +" Not found !\n Do you want to create new location?");
                 mButtonCanclePop = (Button)container.findViewById(R.id.buttoncanclelocatepop);
                 mButtonCanclePop.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -156,7 +177,14 @@ public class LocationList extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 addLoc = new Location(0,nameEditText.getText().toString(),addressEditText.getText().toString());
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putInt("LocationId",addLoc.getId());
+                                editor.putString("LocationName",addLoc.getName());
+                                editor.putString("LocationAddress", addLoc.getAddress());
+                                editor.apply();
                                 popupWindow2.dismiss();
+                                finish();
                                 Toast.makeText(LocationList.this, "Create " + nameEditText.getText().toString(), Toast.LENGTH_LONG).show();
                             }
                         });
