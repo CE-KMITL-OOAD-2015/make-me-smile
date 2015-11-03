@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -109,9 +110,13 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
     public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
-            JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
-            System.out.println(response);
-            JSONArray jArray = jObject.getJSONArray("myArray");
+            //JSONArray jsonArray2 = new JSONArray(response);
+
+            //Log.e("TEST", jsonArray2.getString(0));
+
+            //JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
+            //System.out.println(response);
+            JSONArray jArray = new JSONArray(response);
             int i = 0;
             while (i < jArray.length()) {
                 JSONObject job = jArray.getJSONObject(i);
@@ -119,15 +124,20 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
                 JSONObject job3 = new JSONObject(job.get("user").toString());
                 Location loc = new Location(job2.getInt("id"), job2.getString("name"), job2.get("address").toString());
                 User user = new User(job3.getString("fbid"), job3.getString("name"), job3.getInt("isPost"));
-                JSONObject job4 = new JSONObject("{" + "\"myArray\": " + job.getString("commentList") + "}");
-                JSONArray jArray2 = job4.getJSONArray("myArray");
+                //JSONObject job4 = new JSONObject("{" + "\"myArray\": " + job.getString("commentList") + "}");
+                JSONArray jArray2 = job.getJSONArray("commentList");
                 ArrayList<Comment> commentList = new ArrayList<>();
-                ArrayList<String> picList = stringToArray(job.getString("picList"));
+                JSONArray ja = job.getJSONArray("picList");
+                ArrayList<String> picList = new ArrayList<>();
+                for(int m = 0; m < ja.length(); m++){
+                    picList.add(ja.getString(m));
+                }
+
                 int j = 0;
                 while(j<jArray2.length())
                 {
                     JSONObject job5 = jArray2.getJSONObject(j);
-                    System.out.println(job5.toString());
+                   // System.out.println(job5.toString());
                     JSONObject job6 = new JSONObject(job5.get("user").toString());
                     User usr = new User(job6.getString("fbid"),job6.getString("name"),job6.getInt("isPost"));
                     commentList.add(new Comment(job5.getString("detail"),job5.getString("time"),usr));
@@ -145,6 +155,7 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
                         , commentList
                         , picList
                 );
+
                 styList.add(story);
                 i++;
 

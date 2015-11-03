@@ -80,5 +80,10 @@
                 android:textSize="16sp"/>
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/imagetest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.toocomplicated.mademesmile;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
@@ -19,6 +20,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     protected Button sad;
     protected TextView smileCount;
     protected TextView sadCount;
+    protected ImageView pic;
     public CustomViewHolder(View itemView) {
         super(itemView);
         this.txtView = (TextView) itemView.findViewById(R.id.listText);
@@ -29,5 +31,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         this.sad = (Button) itemView.findViewById(R.id.sad);
         this.smileCount = (TextView) itemView.findViewById(R.id.smilecount);
         this.sadCount = (TextView) itemView.findViewById(R.id.sadcount);
+        this.pic = (ImageView) itemView.findViewById(R.id.imagetest);
     }
 }

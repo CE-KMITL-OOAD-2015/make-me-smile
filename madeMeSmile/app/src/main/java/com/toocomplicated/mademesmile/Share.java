@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,9 +41,9 @@ import com.facebook.login.widget.ProfilePictureView;
 
 import com.facebook.login.widget.ProfilePictureView;
 
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,6 +55,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import android.util.Base64;
 
 import static com.toocomplicated.mademesmile.Constant.CONTENT;
 import static com.toocomplicated.mademesmile.Constant.TABLE_NAME;
@@ -71,7 +73,7 @@ public class Share extends AppCompatActivity {
     private static final int SELECTED_PICTURE = 1;
     //private ImageView mImage;
     private Button mButtonPhoto;
-    private ArrayList<String> imagesPathList;
+    private ArrayList<String> imagesPathList = new ArrayList<>();
     private LinearLayout lnrImages;
     private Bitmap yourbitmap;
 
@@ -81,7 +83,7 @@ public class Share extends AppCompatActivity {
         setContentView(R.layout.activity_share);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         helper = new ShareHelper(this);
-        location = new Location(0,"","");
+        location = new Location(0, "", "");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
@@ -97,27 +99,27 @@ public class Share extends AppCompatActivity {
             helper.close();
         }*/
 
-        Button mButtonCancle = (Button)findViewById(R.id.buttoncancle); // cancle button
+        Button mButtonCancle = (Button) findViewById(R.id.buttoncancle); // cancle button
         mButtonCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),FeedList.class));
+                startActivity(new Intent(getApplicationContext(), FeedList.class));
                 finish();
             }
         });
-        Button mButtonLocation = (Button)findViewById(R.id.buttontag);
+        Button mButtonLocation = (Button) findViewById(R.id.buttontag);
         mButtonLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), LocationList.class));
             }
         });
-        mLocationView = (TextView)findViewById(R.id.locationview);
-        mLocationView.setText("Location : "+location.getName());
-       // mImage = (ImageView)findViewById(R.id.pictureview);
-        final EditText mEditText = (EditText)findViewById(R.id.edittext);
-        lnrImages = (LinearLayout)findViewById(R.id.lnrImages);
-        mButtonPhoto = (Button)findViewById(R.id.buttonphoto);
+        mLocationView = (TextView) findViewById(R.id.locationview);
+        mLocationView.setText("Location : " + location.getName());
+        // mImage = (ImageView)findViewById(R.id.pictureview);
+        final EditText mEditText = (EditText) findViewById(R.id.edittext);
+        lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
+        mButtonPhoto = (Button) findViewById(R.id.buttonphoto);
         mButtonPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,36 +129,38 @@ public class Share extends AppCompatActivity {
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, SELECTED_PICTURE);*/
-                Intent intent = new Intent(getApplicationContext(),CustomPhotoGalleryActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CustomPhotoGalleryActivity.class);
                 //startActivityForResult(Intent.createChooser(intent,"Choose Picture"),SELECTED_PICTURE);
-                startActivityForResult(intent,SELECTED_PICTURE);
+                startActivityForResult(intent, SELECTED_PICTURE);
             }
         });
         Button mButtonShare = (Button) findViewById(R.id.buttonshare); // share button
         mButtonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(location.getName().equals("")){
+                if (location.getName().equals("")) {
                     Toast.makeText(Share.this, "You must tag location!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), LocationList.class));
-                }
-                else {
-                    try {
-                        addStory(mEditText.getText().toString());
-                        sendStory();
+                } else {
+                    //try {
+//                    } catch (Exception e) {
+//                        throw new RuntimeException(e.getMessage());
+//                    } finally {
+//                    }
+                    addStory(mEditText.getText().toString());
+
+                    sendStory();
                     /*Cursor cursor = getAllStory();
                     showStory(cursor);*/
-                        mEditText.setText(null);
-                    } catch (Exception e) {
-                    } finally {
-                        startActivity(new Intent(getApplicationContext(), FeedList.class));
-                        finish();
-                    }
+                    mEditText.setText(null);
+
+                    startActivity(new Intent(getApplicationContext(), FeedList.class));
+                    finish();
                 }
             }
         });
 
-        profilePicture = (ProfilePictureView)findViewById(R.id.profile_picturetest);
+        profilePicture = (ProfilePictureView) findViewById(R.id.profile_picturetest);
         profilePicture.setProfileId("1021181027942407");
     }
 
@@ -164,15 +168,15 @@ public class Share extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == SELECTED_PICTURE && resultCode == RESULT_OK && data != null){
+        if (requestCode == SELECTED_PICTURE && resultCode == RESULT_OK && data != null) {
             imagesPathList = new ArrayList<String>();
             String[] imagesPath = data.getStringExtra("data").split("\\|");
-            try{
+            try {
                 lnrImages.removeAllViews();
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
-            for (int i=0;i<imagesPath.length;i++) {
+            for (int i = 0; i < imagesPath.length; i++) {
                 imagesPathList.add(imagesPath[i]);
                 System.out.println("check" + imagesPath[i]);
                 System.out.println("checklist" + imagesPathList);
@@ -185,19 +189,21 @@ public class Share extends AppCompatActivity {
         }
     }
 
-    private void addStory(String str) throws Exception {
+    private void addStory(String str) {
         //  HttpURLConnectionExample httpyk = new HttpURLConnectionExample();
-        sq = "privacy=0&des="+ str +"&fbid="+ fbid +"&locationId="+ location.getId() +"&locationName="+
-                location.getName() +"&address="+ location.getAddress() +"&img="+imageToString(imagesPathList).toString();
+        sq = "privacy=0&des=" + str + "&fbid=" + fbid + "&locationId=" + location.getId() + "&locationName=" +
+                location.getName() + "&address=" + location.getAddress() + "&img=" + imageToString(imagesPathList).toString();
+        Log.e("TEST2", sq);
+//        System.out.println("check pic " + imageToString(imagesPathList).toString());
     }
 
     private void sendStory() {
-        final   HttpURLConnectionExample  h2 = new HttpURLConnectionExample();
-        new Thread( new Runnable() {
+        final HttpURLConnectionExample h2 = new HttpURLConnectionExample();
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    h2.sendPost("writeStory",sq);
+                    h2.sendPost("writeStory", sq);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                 }
@@ -211,43 +217,52 @@ public class Share extends AppCompatActivity {
         SharedPreferences sharePref = PreferenceManager.getDefaultSharedPreferences(this);
         int id = sharePref.getInt("LocationId", 0);
         String name = sharePref.getString("LocationName", "No location");
-        String address = sharePref.getString("LocationAddress","No address");
-        location = new Location(id,name,address);
+        String address = sharePref.getString("LocationAddress", "No address");
+        location = new Location(id, name, address);
         mLocationView.setText("Location : " + location.getName());
     }
 
-    private ArrayList<String> imageToString(ArrayList<String> pic) throws Exception {
+    private ArrayList<String> imageToString(ArrayList<String> pic) {
         ArrayList<String> strPicArr = new ArrayList<>();
-        for(String it: pic) {
-            File file = new File(it);
+        for (String it : pic) {
+            Uri uri = Uri.parse("file:///" + it);
+            Bitmap bitmap = null;
             try {
-			/*
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //File file = new File(it);
+//            try {
+            /*
 			 * Reading a Image file from file system
 			 */
-                FileInputStream imageInFile = new FileInputStream(file);
-                byte imageData[] = new byte[(int) file.length()];
-                imageInFile.read(imageData);
+                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
+                byte[] imageData = byteStream.toByteArray();
+                //FileInputStream imageInFile = new FileInputStream(file);
+                //byte imageData[] = new byte[(int) file.length()];
+                //imageInFile.read(imageData);
 
 			/*
 			 * Converting Image byte array into Base64 String
 			 */
                 System.out.println(it);
-                strPicArr.add(new String(Base64.encodeBase64(imageData)));
-                imageInFile.close();
+                strPicArr.add(new String(Base64.encode(imageData, Base64.NO_PADDING)));
+                //imageInFile.close();
 
 
-            } catch (FileNotFoundException e) {
-                System.out.println("Image not found" + e);
-            } catch (IOException ioe) {
-                System.out.println("Exception while reading the Image " + ioe);
-            }
+//            } catch (FileNotFoundException e) {
+//                System.out.println("Image not found" + e);
+//            } catch (IOException ioe) {
+//                System.out.println("Exception while reading the Image " + ioe);
+//            }
         }
         return strPicArr;
     }
 
-    public static String encodeImage(byte[] imageByteArray){
-        return Base64.encodeBase64URLSafeString(imageByteArray);
-    }
+
     /*SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TIME, System.currentTimeMillis());
@@ -255,30 +270,30 @@ public class Share extends AppCompatActivity {
         db.insertOrThrow(TABLE_NAME, null, values);*/
 
 
-    private static String[] COLUMNS = {_ID, TIME, CONTENT };
+    private static String[] COLUMNS = {_ID, TIME, CONTENT};
     private static String ORDER_BY = TIME + " DESC";
 
-    private Cursor getAllStory(){
+    private Cursor getAllStory() {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, ORDER_BY);
         return cursor;
     }
 
-    private void showStory(Cursor cursor){
+    private void showStory(Cursor cursor) {
         StringBuilder builder = new StringBuilder("Your story:\n\n");
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             long id = cursor.getLong(0);
             long time = cursor.getLong(1);
             String content = cursor.getString(2);
 
             builder.append("Story ").append(id).append(": ");
-            String strDate = (String) DateFormat.format("yyyy-MM-dd hh:mm:ss" , new Date(time));
+            String strDate = (String) DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date(time));
             builder.append(strDate).append("\n");
             builder.append("\t").append(content).append("\n");
         }
-       // TextView mTextView = (TextView)findViewById(R.id.all_story);
-      //  mTextView.setText(builder);
+        // TextView mTextView = (TextView)findViewById(R.id.all_story);
+        //  mTextView.setText(builder);
     }
 
    /* private void bindWidget() {

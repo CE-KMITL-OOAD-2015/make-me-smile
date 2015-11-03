@@ -1,13 +1,17 @@
 package com.toocomplicated.mademesmile;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import org.json.JSONObject;
+import android.util.Base64;
 
 import java.util.List;
 
@@ -17,6 +21,7 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private List<Story> feedItemList;
     private Context mContext;
+    private Bitmap bitmap;
     private int presssmile = 0;
     private int presssad = 0;
     private int check = 0;
@@ -45,6 +50,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         holder.proFile.setProfileId(feedItem.getFbid());
         holder.smileCount.setText("" + feedItem.getSmile());
         holder.sadCount.setText("" + feedItem.getSad());
+        if(feedItem.getPicList().size() != 0) {
+                String res = feedItem.getPicList().get(0);
+          //  System.out.println(feedItem.getPicList().get(0));
+
+            byte[] imageByteArray = Base64.decode(res,Base64.NO_PADDING);
+            bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+            holder.pic.setImageBitmap(bitmap);
+            holder.pic.setAdjustViewBounds(true);
+        }
         holder.smile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,4 +122,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public int getItemCount() {
         return (null != feedItemList ? feedItemList.size() : 0);
     }
+
+    /*public static byte[] decodeImage(String imageDataString) {
+        return Base64.decodeBase64(imageDataString);
+    }*/
 }
