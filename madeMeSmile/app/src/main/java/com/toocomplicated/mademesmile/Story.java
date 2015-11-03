@@ -1,4 +1,5 @@
 package com.toocomplicated.mademesmile;
+import java.util.ArrayList;
 import java.util.Date;
 /**
  * Created by User on 15/10/2558.
@@ -13,15 +14,20 @@ public class Story {
     private String time;
     private int privacy;
     private User user;
+    private ArrayList<Comment> commentList;
+    private ArrayList<String> picList;
     private int arrive = 0;
     public Story(String des,int privacy,String fbid,Location place) {
         this.des = des;
         this.privacy = privacy;
         this.fbid = fbid;
+        this.user = null;
         this.place = place;
     }
     public Story(int storyId,String des,int smile, int sad
-            ,String time,int privacy,String fbid,Location place, User user){
+            ,String time,int privacy,String fbid,Location place, User user,ArrayList<Comment> commentList
+    ,ArrayList<String> picList
+                 ){
         this.storyId = storyId;
         this.des = des;
         this.smile = smile;
@@ -31,6 +37,8 @@ public class Story {
         this.fbid = fbid;
         this.place = place;
         this.user = user;
+        this.commentList = commentList;
+        this.picList = picList;
     }
     public int getStoryId()
     {
@@ -66,5 +74,13 @@ public class Story {
     }
     public  User getUser(){
         return user;
+    }
+    public ArrayList<Comment> getCommentList()
+    {
+        return commentList;
+    }
+    public ArrayList<String> getPicList()
+    {
+        return picList;
     }
 }

@@ -40,7 +40,7 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
                     test = h.sendPost("feed", "fbid="+ Login.id);
                     // JSONObject jsonObject = new jsonObject("{"test)
                     //styList = getStoryList(test);
-                    styList2 = getStoryList(test);
+                    //styList2 = getStoryList(test);
                     System.out.println("Check");
                     //showStory(styList2);
                     runOnUiThread(new Runnable() {
@@ -112,7 +112,7 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
 
 
 
-    public ArrayList<Story> getStoryList(String response) {
+  /*  public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
             JSONArray jarr = new JSONArray();
@@ -146,7 +146,7 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
             e.printStackTrace();
         }
         return styList;
-    }
+    }*/
 
     private void setWidgetEventListener() {
 
@@ -269,7 +269,7 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
                     test = h.sendPost("feed", "d");
                     // JSONObject jsonObject = new jsonObject("{"test)
                     //styList = getStoryList(test);
-                    styList2 = getStoryList(test);
+                   // styList2 = getStoryList(test);
                     //showStory(styList2);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -309,7 +309,7 @@ public class Feed extends ListActivity implements StoryAdapter.customButtonListe
             public void run() {
                 try {
                     test = h.sendPost("feed", "fbid="+ Login.id);
-                    styList2 = getStoryList(test);
+                   // styList2 = getStoryList(test);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

@@ -40,7 +40,7 @@ public class FeedService extends Service {
                         try {
                             list.clear();
                             test = h.sendPost("feed", "d");
-                            list = getStoryList(test);
+                            //list = getStoryList(test);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                         }
@@ -74,7 +74,7 @@ public class FeedService extends Service {
     public ArrayList<Story> getWordList() {
         return list;
     }
-    public ArrayList<Story> getStoryList(String response) {
+    /*public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
             JSONArray jarr = new JSONArray();
@@ -108,7 +108,7 @@ public class FeedService extends Service {
             e.printStackTrace();
         }
         return styList;
-    }
+    }*/
 
 
 }

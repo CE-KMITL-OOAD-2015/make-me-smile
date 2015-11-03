@@ -134,7 +134,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         return row;
     }
 
-    public ArrayList<Story> getStoryList(String response) {
+  /*  public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
             JSONArray jarr = new JSONArray();
@@ -166,7 +166,7 @@ public class StoryAdapter extends ArrayAdapter<Story> {
             e.printStackTrace();
         }
         return styList;
-    }
+    }*/
 
     public ArrayList<Story> getData() {
         return resource;

@@ -21,17 +21,17 @@ public class HttpURLConnectionAdd {
 
     private final String USER_AGENT = "Mozilla/5.0";
 
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
 
         HttpURLConnectionAdd http = new HttpURLConnectionAdd();
 
         System.out.println("Testing - Send Http POST request");
         http.sendPost();
 
-    }
+    }*/
 
-    private void sendPost() throws Exception {
-        File file = new File("/Users/L/Desktop/demo/src/main/java/testhttp/img.png");
+    private void sendPost(String pic) throws Exception {
+        File file = new File(pic);
         String imageDataString = "";
         try {
 			/*

@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,9 +78,9 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
             Integer result = 1;
             final HttpURLConnectionExample  h = new HttpURLConnectionExample();
                     try {
-                        test = h.sendPost("feed", "fbid="+ Login.id);
+                        test = h.sendPost("feed", "fbid=" + Login.id);
                         feedList = getStoryList(test);
-                        System.out.println(feedList);
+                       // System.out.println(feedList);
                     } catch (Exception e) {
                         // TODO Auto-generated catch block
                     }
@@ -108,7 +109,6 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
     public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
-            JSONArray jarr = new JSONArray();
             JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
             System.out.println(response);
             JSONArray jArray = jObject.getJSONArray("myArray");
@@ -119,6 +119,20 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
                 JSONObject job3 = new JSONObject(job.get("user").toString());
                 Location loc = new Location(job2.getInt("id"), job2.getString("name"), job2.get("address").toString());
                 User user = new User(job3.getString("fbid"), job3.getString("name"), job3.getInt("isPost"));
+                JSONObject job4 = new JSONObject("{" + "\"myArray\": " + job.getString("commentList") + "}");
+                JSONArray jArray2 = job4.getJSONArray("myArray");
+                ArrayList<Comment> commentList = new ArrayList<>();
+                ArrayList<String> picList = stringToArray(job.getString("picList"));
+                int j = 0;
+                while(j<jArray2.length())
+                {
+                    JSONObject job5 = jArray2.getJSONObject(j);
+                    System.out.println(job5.toString());
+                    JSONObject job6 = new JSONObject(job5.get("user").toString());
+                    User usr = new User(job6.getString("fbid"),job6.getString("name"),job6.getInt("isPost"));
+                    commentList.add(new Comment(job5.getString("detail"),job5.getString("time"),usr));
+                    j++;
+                }
                 Story story = new Story(job.getInt("storyId")
                         , job.getString("des")
                         , job.getInt("smile")
@@ -128,6 +142,8 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
                         , job.getString("fbid")
                         , loc
                         , user
+                        , commentList
+                        , picList
                 );
                 styList.add(story);
                 i++;
@@ -141,5 +157,21 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
         return styList;
     }
 
-
+    public ArrayList<String> stringToArray(String st) {
+        if(!st.equals("[]")) {
+            String replace = st.replace("[", "");
+            String replace1 = replace.replace("]", "");
+            ArrayList<String> stList = new ArrayList<String>(Arrays.asList(replace1.split(",")));
+            int i = 0;
+            for (String it : stList) {
+                stList.set(i, it.replace(" ", ""));
+                i++;
+            }
+            return stList;
+        }
+        else {
+            System.out.println("NO PIC");
+            return new ArrayList<String>();
+        }
+    }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,19 @@ import com.facebook.login.widget.ProfilePictureView;
 
 import com.facebook.login.widget.ProfilePictureView;
 
+import org.apache.commons.codec.binary.Base64;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.toocomplicated.mademesmile.Constant.CONTENT;
@@ -54,8 +69,11 @@ public class Share extends AppCompatActivity {
     private Location location;
     private TextView mLocationView;
     private static final int SELECTED_PICTURE = 1;
-    private ImageView mImage;
+    //private ImageView mImage;
     private Button mButtonPhoto;
+    private ArrayList<String> imagesPathList;
+    private LinearLayout lnrImages;
+    private Bitmap yourbitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,14 +114,22 @@ public class Share extends AppCompatActivity {
         });
         mLocationView = (TextView)findViewById(R.id.locationview);
         mLocationView.setText("Location : "+location.getName());
-        mImage = (ImageView)findViewById(R.id.pictureview);
+       // mImage = (ImageView)findViewById(R.id.pictureview);
         final EditText mEditText = (EditText)findViewById(R.id.edittext);
+        lnrImages = (LinearLayout)findViewById(R.id.lnrImages);
         mButtonPhoto = (Button)findViewById(R.id.buttonphoto);
         mButtonPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, SELECTED_PICTURE);
+               /* Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, SELECTED_PICTURE);*/
+                Intent intent = new Intent(getApplicationContext(),CustomPhotoGalleryActivity.class);
+                //startActivityForResult(Intent.createChooser(intent,"Choose Picture"),SELECTED_PICTURE);
+                startActivityForResult(intent,SELECTED_PICTURE);
             }
         });
         Button mButtonShare = (Button) findViewById(R.id.buttonshare); // share button
@@ -139,21 +165,30 @@ public class Share extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == SELECTED_PICTURE && resultCode == RESULT_OK && data != null){
-            Uri pickedImage = data.getData();
-            String[] filePath = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-            mImage.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            imagesPathList = new ArrayList<String>();
+            String[] imagesPath = data.getStringExtra("data").split("\\|");
+            try{
+                lnrImages.removeAllViews();
+            }catch (Throwable e){
+                e.printStackTrace();
+            }
+            for (int i=0;i<imagesPath.length;i++) {
+                imagesPathList.add(imagesPath[i]);
+                System.out.println("check" + imagesPath[i]);
+                System.out.println("checklist" + imagesPathList);
+                yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
+                ImageView imageView = new ImageView(this);
+                imageView.setImageBitmap(yourbitmap);
+                imageView.setAdjustViewBounds(true);
+                lnrImages.addView(imageView);
+            }
         }
     }
 
-    private void addStory(String str) {
+    private void addStory(String str) throws Exception {
         //  HttpURLConnectionExample httpyk = new HttpURLConnectionExample();
         sq = "privacy=0&des="+ str +"&fbid="+ fbid +"&locationId="+ location.getId() +"&locationName="+
-                location.getName() +"&address="+ location.getAddress() +"&img=1234";
+                location.getName() +"&address="+ location.getAddress() +"&img="+imageToString(imagesPathList).toString();
     }
 
     private void sendStory() {
@@ -178,7 +213,40 @@ public class Share extends AppCompatActivity {
         String name = sharePref.getString("LocationName", "No location");
         String address = sharePref.getString("LocationAddress","No address");
         location = new Location(id,name,address);
-        mLocationView.setText("Location : "+location.getName());
+        mLocationView.setText("Location : " + location.getName());
+    }
+
+    private ArrayList<String> imageToString(ArrayList<String> pic) throws Exception {
+        ArrayList<String> strPicArr = new ArrayList<>();
+        for(String it: pic) {
+            File file = new File(it);
+            try {
+			/*
+			 * Reading a Image file from file system
+			 */
+                FileInputStream imageInFile = new FileInputStream(file);
+                byte imageData[] = new byte[(int) file.length()];
+                imageInFile.read(imageData);
+
+			/*
+			 * Converting Image byte array into Base64 String
+			 */
+                System.out.println(it);
+                strPicArr.add(new String(Base64.encodeBase64(imageData)));
+                imageInFile.close();
+
+
+            } catch (FileNotFoundException e) {
+                System.out.println("Image not found" + e);
+            } catch (IOException ioe) {
+                System.out.println("Exception while reading the Image " + ioe);
+            }
+        }
+        return strPicArr;
+    }
+
+    public static String encodeImage(byte[] imageByteArray){
+        return Base64.encodeBase64URLSafeString(imageByteArray);
     }
     /*SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
