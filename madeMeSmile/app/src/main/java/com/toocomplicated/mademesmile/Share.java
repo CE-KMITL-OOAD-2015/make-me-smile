@@ -138,7 +138,7 @@ public class Share extends AppCompatActivity {
         mButtonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (location.getName().equals("")) {
+                if (location.getName().equals("") || location.getName().equals("No location")) {
                     Toast.makeText(Share.this, "You must tag location!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), LocationList.class));
                 } else {
@@ -181,6 +181,7 @@ public class Share extends AppCompatActivity {
                 System.out.println("check" + imagesPath[i]);
                 System.out.println("checklist" + imagesPathList);
                 yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
+
                 ImageView imageView = new ImageView(this);
                 imageView.setImageBitmap(yourbitmap);
                 imageView.setAdjustViewBounds(true);
@@ -249,7 +250,7 @@ public class Share extends AppCompatActivity {
 			 * Converting Image byte array into Base64 String
 			 */
                 System.out.println(it);
-                strPicArr.add(new String(Base64.encode(imageData, Base64.NO_PADDING)));
+                strPicArr.add(com.toocomplicated.mademesmile.Base64.encodeBytes(imageData));
                 //imageInFile.close();
 
 

@@ -1,9 +1,13 @@
 package com.toocomplicated.mademesmile;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.*;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
@@ -16,11 +20,17 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     protected TextView txtLocate;
     protected TextView txtName;
     protected ProfilePictureView proFile;
+    protected ProfilePictureView proFileCom;
+    protected Button send;
+    protected EditText txtComment;
     protected Button smile;
     protected Button sad;
+    protected Button comment;
     protected TextView smileCount;
     protected TextView sadCount;
     protected ImageView pic;
+    protected RecyclerView commentView;
+    protected RelativeLayout rl;
     public CustomViewHolder(View itemView) {
         super(itemView);
         this.txtView = (TextView) itemView.findViewById(R.id.listText);
@@ -29,8 +39,14 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         this.proFile = (ProfilePictureView) itemView.findViewById(R.id.profile_picturefeed);
         this.smile = (Button) itemView.findViewById(R.id.smile);
         this.sad = (Button) itemView.findViewById(R.id.sad);
+        this.comment = (Button) itemView.findViewById(R.id.commentbtn);
         this.smileCount = (TextView) itemView.findViewById(R.id.smilecount);
         this.sadCount = (TextView) itemView.findViewById(R.id.sadcount);
         this.pic = (ImageView) itemView.findViewById(R.id.imagetest);
+        this.commentView = (RecyclerView) itemView.findViewById(R.id.recycler_viewcomment);
+        this.proFileCom = (ProfilePictureView) itemView.findViewById(R.id.profile_picturecommentself);
+        this.send = (Button) itemView.findViewById(R.id.commentsendbtn);
+        this.txtComment = (EditText) itemView.findViewById(R.id.commenttext);
+        this.rl = (RelativeLayout) itemView.findViewById(R.id.relative);
     }
 }

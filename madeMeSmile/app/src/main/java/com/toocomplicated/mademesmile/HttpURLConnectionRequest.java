@@ -1,6 +1,5 @@
 package com.toocomplicated.mademesmile;
 
-
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
@@ -26,7 +25,7 @@ public class HttpURLConnectionRequest {
 
         //"privacy=0&des=kuyy&fbid=10204855639980330&locationId=1&locationName=KMITL&address=Address1";
 
-        String urlParameters  = "storyId=1"; //theory : it return only one.
+        String urlParameters  = "storyId=98"; //theory : it return only one.
         byte[] postData       = urlParameters.getBytes( "UTF-8" );
         int    postDataLength = postData.length;
         String request        = "http://203.151.92.173:8080/requestPicture";
@@ -64,7 +63,7 @@ public class HttpURLConnectionRequest {
 			/*
 			 * Write a image byte array into file system
 			 */
-            FileOutputStream imageOutFile = new FileOutputStream("/Users/L/Desktop/demo/src/main/java/testhttp/mini3.png");
+            FileOutputStream imageOutFile = new FileOutputStream("C:\\Users\\Win8.1\\Documents\\madeMeSmile\\app\\src\\main\\img\\img_out.jpg");
             imageOutFile.write(imageByteArray);
 
             imageOutFile.close();

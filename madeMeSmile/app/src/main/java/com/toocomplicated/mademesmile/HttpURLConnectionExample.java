@@ -98,26 +98,6 @@ public class HttpURLConnectionExample {
             response.append(inputLine);
         }
         in.close();
-        //print result
-
-       /* List<Story> storyList = new LinkedList<>();
-
-
-            JSONArray jsonArray = new JSONArray(response.toString());
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Story story = new Story(
-                        jsonObject.getInt("storyId"),
-                        jsonObject.getString("des"),
-                        jsonObject.getInt("smile"),
-                        jsonObject.getInt("sad"),
-                        jsonObject.getInt("placeId"),
-                        jsonObject.getString("time"),
-                        jsonObject.getInt("privacy"),
-                        jsonObject.getInt("userId"), null
-                );
-                storyList.add(story);
-            }*/
         urlConn.disconnect();
         return response.toString();
 

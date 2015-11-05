@@ -20,4 +20,6 @@
     <string name="createpop">Create location</string>
     <string name="namelocation">Location Name</string>
     <string name="addresslocation">Location Address</string>
+    <string name="comment">Comment</string>
+    <string name="commentsend">Send</string>
 </resources>

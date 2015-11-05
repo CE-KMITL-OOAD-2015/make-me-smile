@@ -1,6 +1,5 @@
 package com.toocomplicated.mademesmile;
 
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -21,17 +20,17 @@ public class HttpURLConnectionAdd {
 
     private final String USER_AGENT = "Mozilla/5.0";
 
-   /* public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
         HttpURLConnectionAdd http = new HttpURLConnectionAdd();
 
         System.out.println("Testing - Send Http POST request");
         http.sendPost();
 
-    }*/
+    }
 
-    private void sendPost(String pic) throws Exception {
-        File file = new File(pic);
+    private void sendPost() throws Exception {
+        File file = new File("C:\\Users\\Win8.1\\Documents\\madeMeSmile\\app\\src\\main\\img\\img.jpg");
         String imageDataString = "";
         try {
 			/*
@@ -55,8 +54,8 @@ public class HttpURLConnectionAdd {
         }
         //"privacy=0&des=kuyy&fbid=10204855639980330&locationId=1&locationName=KMITL&address=Address1";
         System.out.println(imageDataString);
-        String urlParameters  = "storyId=1&fbid=2&img="+imageDataString; //change only storyId & fbid
-        byte[] postData       = urlParameters.getBytes( "UTF-8");
+        String urlParameters  = "storyId=98&fbid=2&img="+imageDataString; //change only storyId & fbid
+        byte[] postData       = urlParameters.getBytes( "UTF-8" );
         int    postDataLength = postData.length;
         String request        = "http://203.151.92.173:8080/postPicture";
         URL    url            = new URL( request );

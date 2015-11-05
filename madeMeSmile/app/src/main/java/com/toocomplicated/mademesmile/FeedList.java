@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by Win8.1 on 26/10/2558.
  */
-public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,RecyclerAdapter.ClickListener {
     private List<Story> feedList;
     private RecyclerView mRecycler;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -66,6 +66,12 @@ public class FeedList extends AppCompatActivity implements SwipeRefreshLayout.On
     public void onRefresh() {
         Toast.makeText(FeedList.this, "Refresh Feed...", Toast.LENGTH_SHORT).show();
         new AsyncHttpTask().execute();
+    }
+
+
+    @Override
+    public void itemClick(View view, int position) {
+
     }
 
     public class AsyncHttpTask extends AsyncTask<String,Void,Integer>{

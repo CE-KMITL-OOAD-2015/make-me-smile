@@ -3,11 +3,13 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:id="@+id/relative"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -50,11 +52,15 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/imagetest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/smile"
@@ -78,12 +84,44 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textSize="16sp"/>
+            <Button
+                android:id="@+id/commentbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/comment"/>
+        </LinearLayout>
+        <view
+            android:id="@+id/recycler_viewcomment"
+            class="android.support.v7.widget.RecyclerView"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.facebook.login.widget.ProfilePictureView
+                android:id="@+id/profile_picturecommentself"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_margin="8dp"
+                facebook:com_facebook_preset_size="normal">
+            </com.facebook.login.widget.ProfilePictureView>
+        <EditText
+            android:id="@+id/commenttext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write comment.."/>
+
+            <Button
+                android:id="@+id/commentsendbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/commentsend"/>
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imagetest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </RelativeLayout>
