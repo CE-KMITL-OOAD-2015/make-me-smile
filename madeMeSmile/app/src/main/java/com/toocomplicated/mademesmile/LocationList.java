@@ -1,6 +1,11 @@
 package com.toocomplicated.mademesmile;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -114,6 +119,7 @@ public class LocationList extends AppCompatActivity {
         //new AsyncLocateTask().execute();
     }
 
+
     public class AsyncLocateTask extends AsyncTask<String,Void,Integer>{
 
         @Override
@@ -145,52 +151,8 @@ public class LocationList extends AppCompatActivity {
                 Toast.makeText(LocationList.this, "No location found!", Toast.LENGTH_LONG).show();
                 adapter = new LocationAdapter(LocationList.this, locationList);
                 mRecycler.setAdapter(adapter);
-                layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.popuplocation,null);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                popupWindow = new PopupWindow(container,400,150,true);
-                popupWindow.showAtLocation(linearLayout, Gravity.CENTER,0,0);
-                TextView mTextViewloc = (TextView)container.findViewById(R.id.viewalert);
-                mTextViewloc.setText(mEditText.getText() +" Not found !\n Do you want to create new location?");
-                mButtonCanclePop = (Button)container.findViewById(R.id.buttoncanclelocatepop);
-                mButtonCanclePop.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
-                mButtonCreatePop = (Button)container.findViewById(R.id.buttoncreatepop);
-                mButtonCreatePop.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        layoutInflater2 = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                        ViewGroup container2 = (ViewGroup)layoutInflater2.inflate(R.layout.popupcreate,null);
-                        popupWindow2 = new PopupWindow(container2,400,300,true);
-                        popupWindow2.showAtLocation(linearLayout, Gravity.CENTER,0,0);
-                        nameEditText = (EditText)container2.findViewById(R.id.textname);
-                        nameEditText.setText(mEditText.getText().toString());
-                        addressEditText = (EditText)container2.findViewById(R.id.textaddress);
-                        mButtonCreateFinish = (Button)container2.findViewById(R.id.buttoncreatepopfinish);
-                        mButtonCreateFinish.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                addLoc = new Location(0,nameEditText.getText().toString(),addressEditText.getText().toString());
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putInt("LocationId",addLoc.getId());
-                                editor.putString("LocationName",addLoc.getName());
-                                editor.putString("LocationAddress", addLoc.getAddress());
-                                editor.apply();
-                                popupWindow2.dismiss();
-                                finish();
-                                Toast.makeText(LocationList.this, "Create " + nameEditText.getText().toString(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                    }
-                });
+                LocationAlert alert = new LocationAlert();
+                alert.show(getFragmentManager(), "Location Alert");
             }
         }
     }
@@ -259,5 +221,74 @@ public class LocationList extends AppCompatActivity {
     public static interface ClickListener{
         public void onClick(View view, int position);
         public void onLongClick(View view, int position);
+    }
+
+    public class LocationAlert extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            setCancelable(false);
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View view = inflater.inflate(R.layout.popuplocation, null);
+            TextView mTextView = (TextView)view.findViewById(R.id.viewalert);
+            mTextView.setText(mEditText.getText() +" Not found !\n Do you want to create new location?");
+            builder.setView(view);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MakeLocationAlert alert = new MakeLocationAlert();
+                    alert.show(getFragmentManager(), "Location Alert");
+                    Toast.makeText(getActivity(), "Please put name and address" , Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getActivity(), "Return to search location" , Toast.LENGTH_SHORT).show();
+                }
+            });
+            Dialog dialog = builder.create();
+
+            return dialog;
+        }
+
+    }
+
+    public class MakeLocationAlert extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            setCancelable(false);
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View view = inflater.inflate(R.layout.popupcreate, null);
+            final EditText mNameView = (EditText)view.findViewById(R.id.textname);
+            mNameView.setText(mEditText.getText().toString());
+            final EditText mAddressView = (EditText) view.findViewById(R.id.textaddress);
+            builder.setView(view);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    addLoc = new Location(0, mNameView.getText().toString(), mAddressView.getText().toString());
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("LocationId", addLoc.getId());
+                    editor.putString("LocationName", addLoc.getName());
+                    editor.putString("LocationAddress", addLoc.getAddress());
+                    editor.apply();
+                    finish();
+                    Toast.makeText(LocationList.this, "Create " + mNameView.getText().toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+            builder.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getActivity(), "Return to search location", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            Dialog dialog = builder.create();
+            return dialog;
+        }
     }
 }

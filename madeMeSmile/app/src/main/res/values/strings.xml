@@ -22,4 +22,22 @@
     <string name="addresslocation">Location Address</string>
     <string name="comment">Comment</string>
     <string name="commentsend">Send</string>
+    <string name="ok">OK</string>
+    <string name="privacy_title">Privacy Settings</string>
+    <string name="public_title">Public</string>
+    <string name="private_title">Private</string>
+    <string name="change_location">Change Location</string>
+    <string name="confirm">Confirm</string>
+    
+    <string-array name="setting">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
+    
+    <string-array name="tabs">
+        <item>TAB 1</item>
+        <item>TAB 2</item>
+        <item>TAB 3</item>
+    </string-array>
+
 </resources>

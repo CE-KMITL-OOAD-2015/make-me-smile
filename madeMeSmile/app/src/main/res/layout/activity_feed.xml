@@ -65,6 +65,33 @@
             android:text="Logout"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/txtsearchfeed"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:background="#ffffff"
+            android:padding="10sp"
+            android:hint="Search by location.." />
+        <ImageButton
+            android:id="@+id/search_img_buttonfeed"
+            android:layout_width="0.0dip"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/search"/>
+
+
+    </LinearLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"

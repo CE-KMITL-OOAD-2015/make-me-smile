@@ -6,6 +6,7 @@ import android.util.*;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,11 +24,13 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     protected ProfilePictureView proFileCom;
     protected Button send;
     protected EditText txtComment;
-    protected Button smile;
-    protected Button sad;
-    protected Button comment;
+    protected ImageButton smile;
+    protected ImageButton sad;
+    protected ImageButton comment;
+    protected ImageButton setting;
     protected TextView smileCount;
     protected TextView sadCount;
+    protected TextView commentCount;
     protected ImageView pic;
     protected RecyclerView commentView;
     protected RelativeLayout rl;
@@ -37,9 +40,9 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         this.txtLocate = (TextView) itemView.findViewById(R.id.listLocate);
         this.txtName = (TextView) itemView.findViewById(R.id.name);
         this.proFile = (ProfilePictureView) itemView.findViewById(R.id.profile_picturefeed);
-        this.smile = (Button) itemView.findViewById(R.id.smile);
-        this.sad = (Button) itemView.findViewById(R.id.sad);
-        this.comment = (Button) itemView.findViewById(R.id.commentbtn);
+        this.smile = (ImageButton) itemView.findViewById(R.id.smile);
+        this.sad = (ImageButton) itemView.findViewById(R.id.sad);
+        this.comment = (ImageButton) itemView.findViewById(R.id.commentbtn);
         this.smileCount = (TextView) itemView.findViewById(R.id.smilecount);
         this.sadCount = (TextView) itemView.findViewById(R.id.sadcount);
         this.pic = (ImageView) itemView.findViewById(R.id.imagetest);
@@ -48,5 +51,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         this.send = (Button) itemView.findViewById(R.id.commentsendbtn);
         this.txtComment = (EditText) itemView.findViewById(R.id.commenttext);
         this.rl = (RelativeLayout) itemView.findViewById(R.id.relative);
+        this.commentCount = (TextView) itemView.findViewById(R.id.commentcount);
+        this.setting = (ImageButton) itemView.findViewById(R.id.setting);
     }
 }

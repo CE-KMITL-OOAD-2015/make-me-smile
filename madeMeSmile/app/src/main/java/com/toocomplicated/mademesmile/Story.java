@@ -1,10 +1,14 @@
 package com.toocomplicated.mademesmile;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 /**
  * Created by User on 15/10/2558.
  */
-public class Story {
+public class Story implements Parcelable {
     private int storyId;
     private Location place = null;
     private String des;
@@ -16,6 +20,7 @@ public class Story {
     private User user;
     private ArrayList<Comment> commentList;
     private ArrayList<String> picList;
+    private int isFeel;
     private int arrive = 0;
     public Story(String des,int privacy,String fbid,Location place) {
         this.des = des;
@@ -26,8 +31,7 @@ public class Story {
     }
     public Story(int storyId,String des,int smile, int sad
             ,String time,int privacy,String fbid,Location place, User user,ArrayList<Comment> commentList
-    ,ArrayList<String> picList
-                 ){
+    ,ArrayList<String> picList,int isFeel){
         this.storyId = storyId;
         this.des = des;
         this.smile = smile;
@@ -39,6 +43,7 @@ public class Story {
         this.user = user;
         this.commentList = commentList;
         this.picList = picList;
+        this.isFeel = isFeel;
     }
     public int getStoryId()
     {
@@ -83,4 +88,63 @@ public class Story {
     {
         return picList;
     }
+    public int getIsFeel(){
+        return isFeel;
+    }
+    public void setIsFeel(int set){
+        this.isFeel = set;
+    }
+
+    public Story(Parcel in){
+        readFromParcel(in);
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    private void readFromParcel(Parcel in){
+        storyId = in.readInt();
+        des = in.readString();
+        smile = in.readInt();
+        sad = in.readInt();
+        time = in.readString();
+        privacy = in.readInt();
+        fbid = in.readString();
+        place = in.readParcelable(Location.class.getClassLoader());
+        user = (User) in.readValue(User.class.getClassLoader());
+        commentList = in.readArrayList(Comment.class.getClassLoader());
+        picList = in.readArrayList(java.lang.String.class.getClassLoader());
+        isFeel = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.storyId);
+        dest.writeString(this.des);
+        dest.writeInt(this.smile);
+        dest.writeInt(this.sad);
+        dest.writeString(this.time);
+        dest.writeInt(this.privacy);
+        dest.writeString(this.fbid);
+        dest.writeParcelable(this.place,flags);
+        dest.writeValue(this.user);
+        dest.writeList(this.commentList);
+        dest.writeList(this.picList);
+        dest.writeInt(this.isFeel);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        @Override
+        public Story createFromParcel(Parcel source) {
+            return new Story(source);
+        }
+
+        @Override
+        public Story[] newArray(int size) {
+            return new Story[size];
+        }
+    };
 }

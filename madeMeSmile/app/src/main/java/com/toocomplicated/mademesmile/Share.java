@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class Share extends AppCompatActivity {
     private ArrayList<String> imagesPathList = new ArrayList<>();
     private LinearLayout lnrImages;
     private Bitmap yourbitmap;
+    private RadioGroup mPrivacyRadio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,18 +121,13 @@ public class Share extends AppCompatActivity {
         // mImage = (ImageView)findViewById(R.id.pictureview);
         final EditText mEditText = (EditText) findViewById(R.id.edittext);
         lnrImages = (LinearLayout) findViewById(R.id.lnrImages);
+        mPrivacyRadio = (RadioGroup) findViewById(R.id.privacy_radio);
+        mPrivacyRadio.check(R.id.public_radio);
         mButtonPhoto = (Button) findViewById(R.id.buttonphoto);
         mButtonPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, SELECTED_PICTURE);*/
                 Intent intent = new Intent(getApplicationContext(), CustomPhotoGalleryActivity.class);
-                //startActivityForResult(Intent.createChooser(intent,"Choose Picture"),SELECTED_PICTURE);
                 startActivityForResult(intent, SELECTED_PICTURE);
             }
         });
@@ -164,7 +161,7 @@ public class Share extends AppCompatActivity {
         profilePicture.setProfileId("1021181027942407");
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -188,11 +185,18 @@ public class Share extends AppCompatActivity {
                 lnrImages.addView(imageView);
             }
         }
-    }
+    }*/
 
     private void addStory(String str) {
         //  HttpURLConnectionExample httpyk = new HttpURLConnectionExample();
-        sq = "privacy=0&des=" + str + "&fbid=" + fbid + "&locationId=" + location.getId() + "&locationName=" +
+        int privacy;
+        if(mPrivacyRadio.getCheckedRadioButtonId() == R.id.public_radio){
+            privacy = 0;
+        }
+        else{
+            privacy = 1;
+        }
+        sq = "privacy="+ privacy + "&des=" + str + "&fbid=" + fbid + "&locationId=" + location.getId() + "&locationName=" +
                 location.getName() + "&address=" + location.getAddress() + "&img=" + imageToString(imagesPathList).toString();
         Log.e("TEST2", sq);
 //        System.out.println("check pic " + imageToString(imagesPathList).toString());

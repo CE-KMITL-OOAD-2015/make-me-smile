@@ -90,7 +90,16 @@ public class Login extends ActionBarActivity {
 
        /* SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = prefs.edit();*/
+        System.out.println("Create");
             FacebookSdk.sdkInitialize(this.getApplicationContext());
+        if(AccessToken.getCurrentAccessToken() == null) {
+            LoginManager.getInstance().logOut();
+        }
+        else
+        {
+            startActivity(new Intent(getApplicationContext(), FeedTabList.class));
+            finish();
+        }
             callbackManager = CallbackManager.Factory.create();
 
             LoginManager.getInstance().registerCallback(callbackManager,
@@ -116,7 +125,7 @@ public class Login extends ActionBarActivity {
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putBoolean("hasLoggedIn", true);
                             editor.commit();
-                            startActivity(new Intent(getApplicationContext(), FeedList.class));
+                            startActivity(new Intent(getApplicationContext(), FeedTabList.class));
                             finish();
                         }
 
@@ -305,6 +314,7 @@ public class Login extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("Resume");
         updateUI();
     }
 
@@ -322,6 +332,7 @@ public class Login extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
        /*if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {

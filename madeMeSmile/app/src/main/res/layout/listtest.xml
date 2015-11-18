@@ -3,125 +3,182 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/tools"
     android:animateLayoutChanges="true"
     android:id="@+id/relative"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <com.facebook.login.widget.ProfilePictureView
-                android:id="@+id/profile_picturefeed"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f7bf6c"
+                android:orientation="horizontal">
+
+                <com.facebook.login.widget.ProfilePictureView
+                    android:id="@+id/profile_picturefeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    facebook:com_facebook_preset_size="normal"></com.facebook.login.widget.ProfilePictureView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/settings" />
+                    </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/marker"/>
+                    <TextView
+                        android:id="@+id/listLocate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:padding="10dp"
+                        android:textSize="10sp" />
+                </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/listText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                facebook:com_facebook_preset_size="normal">
-            </com.facebook.login.widget.ProfilePictureView>
+                android:padding="10dp"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imagetest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/name"
+                <ImageButton
+                    android:id="@+id/smile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:padding="10dp" />
+                    android:src="@drawable/smile_unpress"
+                    android:background="@null"
+                    android:text="@string/smile" />
 
                 <TextView
-                    android:id="@+id/listLocate"
+                    android:id="@+id/smilecount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:textSize="10sp" />
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:id="@+id/sad"
+                    android:src="@drawable/sad_unpress"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sad" />
+
+                <TextView
+                    android:id="@+id/sadcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:id="@+id/commentbtn"
+                    android:src="@drawable/comment_down"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comment" />
+
+                <TextView
+                    android:id="@+id/commentcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
             </LinearLayout>
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/listText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="16sp" />
-        <ImageView
-            android:id="@+id/imagetest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <view
+                android:id="@+id/recycler_viewcomment"
+                class="android.support.v7.widget.RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fdf5d5"
+                android:visibility="gone" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#fdf5d5">
 
-            <Button
-                android:id="@+id/smile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/smile"/>
-            <TextView
-                android:id="@+id/smilecount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="16sp"/>
-            <Button
-                android:id="@+id/sad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sad"/>
-            <TextView
-                android:id="@+id/sadcount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="16sp"/>
-            <Button
-                android:id="@+id/commentbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/comment"/>
-        </LinearLayout>
-        <view
-            android:id="@+id/recycler_viewcomment"
-            class="android.support.v7.widget.RecyclerView"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                <com.facebook.login.widget.ProfilePictureView
+                    android:id="@+id/profile_picturecommentself"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_margin="8dp"
+                    facebook:com_facebook_preset_size="normal"></com.facebook.login.widget.ProfilePictureView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.facebook.login.widget.ProfilePictureView
-                android:id="@+id/profile_picturecommentself"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_margin="8dp"
-                facebook:com_facebook_preset_size="normal">
-            </com.facebook.login.widget.ProfilePictureView>
-        <EditText
-            android:id="@+id/commenttext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Write comment.."/>
+                <EditText
+                    android:id="@+id/commenttext"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="3"
+                    android:background="#ffffff"
+                    android:hint="Write comment.."
+                    android:padding="5sp" />
 
-            <Button
-                android:id="@+id/commentsendbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentsend"/>
+                <Button
+                    android:id="@+id/commentsendbtn"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/commentsend" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
-
-
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

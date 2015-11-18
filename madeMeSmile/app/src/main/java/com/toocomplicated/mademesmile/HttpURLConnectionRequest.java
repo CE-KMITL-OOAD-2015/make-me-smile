@@ -53,16 +53,16 @@ public class HttpURLConnectionRequest {
 
         //print result
         System.out.println(response.toString());
-
+/*
         try {
-			/*
-			 * Converting a Base64 String into Image byte array
-			 */
+
+			 // Converting a Base64 String into Image byte array
+
             byte[] imageByteArray = decodeImage(response.toString());
 
-			/*
-			 * Write a image byte array into file system
-			 */
+
+			 //* Write a image byte array into file system
+
             FileOutputStream imageOutFile = new FileOutputStream("C:\\Users\\Win8.1\\Documents\\madeMeSmile\\app\\src\\main\\img\\img_out.jpg");
             imageOutFile.write(imageByteArray);
 
@@ -75,15 +75,13 @@ public class HttpURLConnectionRequest {
             System.out.println("Exception while reading the Image " + ioe);
         }
 
-
+*/
     }
 
-    public static String encodeImage(byte[] imageByteArray){
-        return Base64.encodeBase64URLSafeString(imageByteArray);
-    }
 
     public static byte[] decodeImage(String imageDataString) {
-        return Base64.decodeBase64(imageDataString);
+        System.out.println("123"+imageDataString);
+        return android.util.Base64.decode(imageDataString.replaceAll("\n",""), android.util.Base64.URL_SAFE);
     }
 
 }

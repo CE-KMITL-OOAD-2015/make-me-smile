@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d9d9d9"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/banneredit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fabd44"
+            android:src="@drawable/edit" />
+
+        <Button
+            android:id="@+id/buttoncancle_edit"
+            android:layout_width="80sp"
+            android:layout_height="wrap_content"
+            android:background="#fabd44"
+            android:text="@string/cancle" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/edittext_edit"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:layout_margin="15sp"
+        android:background="#ffffff"
+        android:gravity="start"
+        android:hint="@string/hint_share"
+        android:inputType="textMultiLine"
+        android:padding="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/privacy_title" />
+
+        <RadioGroup
+            android:id="@+id/privacy_radio_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/public_radio_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/public_title" />
+
+            <RadioButton
+                android:id="@+id/private_radio_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/private_title" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonbar_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonphoto_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:text="@string/photo" />
+
+        <Button
+            android:id="@+id/buttontag_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/change_location" />
+
+        <Button
+            android:id="@+id/buttonconfirm_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:text="@string/confirm" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/locationview_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textSize="20sp" />
+
+            <ScrollView
+                android:id="@+id/scroll1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/lnrImages_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+</LinearLayout>

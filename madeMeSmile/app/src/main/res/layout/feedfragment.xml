@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d9d9d9"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+        <EditText
+            android:id="@+id/searchloc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#f7c984"
+            android:paddingLeft="5dp"
+            android:hint="Search by location..."/>
+        <ImageButton
+            android:id="@+id/buttonsearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search2"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefreshfrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <view
+            android:id="@+id/recycler_viewflag"
+            class="android.support.v7.widget.RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <ProgressBar
+        android:id="@+id/progress_barflag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

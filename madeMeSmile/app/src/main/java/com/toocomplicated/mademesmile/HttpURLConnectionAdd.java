@@ -25,12 +25,12 @@ public class HttpURLConnectionAdd {
         HttpURLConnectionAdd http = new HttpURLConnectionAdd();
 
         System.out.println("Testing - Send Http POST request");
-        http.sendPost();
+        http.sendPost("");
 
     }
 
-    private void sendPost() throws Exception {
-        File file = new File("C:\\Users\\Win8.1\\Documents\\madeMeSmile\\app\\src\\main\\img\\img.jpg");
+    public void sendPost(String path) throws Exception {
+        File file = new File(path);
         String imageDataString = "";
         try {
 			/*
@@ -53,46 +53,19 @@ public class HttpURLConnectionAdd {
             System.out.println("Exception while reading the Image " + ioe);
         }
         //"privacy=0&des=kuyy&fbid=10204855639980330&locationId=1&locationName=KMITL&address=Address1";
-        System.out.println(imageDataString);
-        String urlParameters  = "storyId=98&fbid=2&img="+imageDataString; //change only storyId & fbid
-        byte[] postData       = urlParameters.getBytes( "UTF-8" );
-        int    postDataLength = postData.length;
-        String request        = "http://203.151.92.173:8080/postPicture";
-        URL    url            = new URL( request );
-        HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        conn.setDoOutput( true );
-        conn.setInstanceFollowRedirects( false );
-        conn.setRequestMethod( "POST" );
-        conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty( "charset", "utf-8");
-        conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
-        conn.setUseCaches( false );
-         DataOutputStream wr = new DataOutputStream( conn.getOutputStream());
-            wr.write( postData );
-
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        //print result
-        System.out.println(response.toString());
-
+       // System.out.println(imageDataString);
+        String urlParameters  = "storyId=98&img="+imageDataString; //change only storyId & fbid
+        HttpURLConnectionExample he = new HttpURLConnectionExample();
+        he.sendPost("postPicture",urlParameters);
 
     }
 
     public static String encodeImage(byte[] imageByteArray){
-        return Base64.encodeBase64URLSafeString(imageByteArray);
+        //return Base64.encodeBase64URLSafeString(imageByteArray);
+        //System.out.println("123" + android.util.Base64.encodeToString(imageByteArray, android.util.Base64.URL_SAFE));
+        return android.util.Base64.encodeToString(imageByteArray, android.util.Base64.URL_SAFE);
+        //return new String(imageByteArray);
     }
 
-    public static byte[] decodeImage(String imageDataString) {
-        return Base64.decodeBase64(imageDataString);
-    }
 
 }
