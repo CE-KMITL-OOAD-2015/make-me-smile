@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d9d9d9"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/bannereditcom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fabd44"
+            android:src="@drawable/edit" />
+
+        <Button
+            android:id="@+id/buttoncancle_editcom"
+            android:layout_width="80sp"
+            android:layout_height="wrap_content"
+            android:background="#fabd44"
+            android:text="@string/cancle" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/edittext_editcom"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:layout_margin="15sp"
+        android:background="#ffffff"
+        android:gravity="start"
+        android:hint="@string/hint_share"
+        android:inputType="textMultiLine"
+        android:padding="12sp" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/buttonbar_editcom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/buttonconfirm_editcom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/confirm" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

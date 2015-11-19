@@ -1,12 +1,18 @@
 package com.toocomplicated.mademesmile;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -16,16 +22,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Base64;
+//import android.util.Base64;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.internal.Utility;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,6 +69,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private boolean smilePress;
     private boolean sadPress;
     private String test = "";
+    private CallbackManager callbackManager;
+    private ShareDialog shareDialog;
 
     public RecyclerAdapter(Context context, List<Story> feedItemList) {
         this.feedItemList = feedItemList;
@@ -82,17 +103,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         holder.smileCount.setText("" + feedItem.getSmile());
         holder.sadCount.setText("" + feedItem.getSad());
         holder.commentCount.setText("" + feedItem.getCommentList().size());
+        holder.time.setText(feedItem.getTime());
+        int size = feedItem.getCommentList().size();
+        if(size == 0){
+            System.out.println(feedItem.getCommentList().size());
+            holder.comment.setImageResource(R.drawable.comment_down_disable);
+            holder.comment.setClickable(false);
+            holder.comment.setEnabled(false);
+        }else{
+            holder.comment.setImageResource(R.drawable.comment_down);
+            holder.comment.setClickable(true);
+            holder.comment.setEnabled(true);
+        }
           if (feedItem.getPicList().size() != 0) {
                 String res = feedItem.getPicList().get(0);
-                //System.out.println("Pic "+feedItem.getPicList().get(0));
 
-                byte[] imageByteArray = decodeImage(res);
-                ByteArrayInputStream bis = new ByteArrayInputStream(imageByteArray);
-               // bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-                bitmap = BitmapFactory.decodeStream(new PlurkInputStream(bis));
-                holder.pic.setAdjustViewBounds(true);
-                holder.pic.setImageBitmap(bitmap);
-               // holder.pic.setAdjustViewBounds(true);
+                //System.out.println("Pic "+feedItem.getPicList().get(0));
+              String temp = res.toString();
+              if(temp.length()>4) {
+                  byte[] imageByteArray = decodeImage(temp);
+                  ByteArrayInputStream bis = new ByteArrayInputStream(imageByteArray);
+                  // bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+                  bitmap = BitmapFactory.decodeStream(new PlurkInputStream(bis));
+                  holder.pic.setAdjustViewBounds(true);
+                  holder.pic.setImageBitmap(bitmap);
+                  // holder.pic.setAdjustViewBounds(true);
+              }
             }
         if(Login.id.equals(feedItem.getFbid())){
             holder.setting.setVisibility(View.VISIBLE);
@@ -108,14 +144,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                 builder.setItems(R.array.setting, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
+                        if (which == 0) {
                             Story edit_story = feedItemList.get(position);
-                            Intent intent = new Intent(mContext,Edit.class);
-                            intent.putExtra("story",edit_story);
+                            Intent intent = new Intent(mContext, Edit.class);
+                            intent.putExtra("story", edit_story);
                             mContext.startActivity(intent);
-                        }
-                        else if(which == 1){
+                        } else if (which == 1) {
                             delete(position);
+
                             Toast.makeText(mContext, "Deleted " + position, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -157,10 +193,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                     e.printStackTrace();
                 }
                 notifyDataSetChanged();*/
-                String storyId = ""+feedItem.getStoryId();
-                String fbid = ""+feedItem.getFbid();
-                String mode = ""+0;
-                String pos = ""+position;
+                String storyId = "" + feedItem.getStoryId();
+                String fbid = "" + feedItem.getFbid();
+                String mode = "" + 0;
+                String pos = "" + position;
                 new AsyncFeelTask().execute(storyId, fbid, mode, pos);
             }
         });
@@ -190,30 +226,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                     e.printStackTrace();
                 }
                 notifyItemChanged(position);*/
-                    String storyId = "" + feedItem.getStoryId();
-                    String fbid = "" + feedItem.getFbid();
-                    String mode = "" + 1;
-                    String pos = "" + position;
-                    new AsyncFeelTask().execute(storyId, fbid, mode, pos);
+                String storyId = "" + feedItem.getStoryId();
+                String fbid = "" + feedItem.getFbid();
+                String mode = "" + 1;
+                String pos = "" + position;
+                new AsyncFeelTask().execute(storyId, fbid, mode, pos);
             }
         });
+    //here
 
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.commentView.getVisibility() == View.VISIBLE) {
-                   // TranslateAnimation animate = new TranslateAnimation(0,0,0,-holder.commentView.getHeight());
-                    Animation out = AnimationUtils.loadAnimation(mContext,android.R.anim.fade_out);
-                   // out.setDuration(500);
+                    // TranslateAnimation animate = new TranslateAnimation(0,0,0,-holder.commentView.getHeight());
+                    Animation out = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out);
+                    // out.setDuration(500);
                     //animate.setFillAfter(true);
                     holder.comment.setImageResource(R.drawable.comment_down);
                     holder.commentView.startAnimation(out);
                     holder.commentView.setVisibility(View.GONE);
                     System.out.println("test hide");
                 } else {
-                   // TranslateAnimation animate = new TranslateAnimation(0,0,0,holder.commentView.getHeight());
-                    Animation in = AnimationUtils.loadAnimation(mContext,android.R.anim.fade_in);
-                   // animate.setDuration(500);
+                    // TranslateAnimation animate = new TranslateAnimation(0,0,0,holder.commentView.getHeight());
+                    Animation in = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
+                    // animate.setDuration(500);
                     //animate.setFillAfter(true);
                     holder.comment.setImageResource(R.drawable.comment_up);
                     holder.commentView.startAnimation(in);
@@ -221,7 +258,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                     System.out.println("test show");
                 }
                 //notifyItemChanged(position);
-                notifyDataSetChanged();
+                // notifyDataSetChanged();
             }
 
         });
@@ -246,34 +283,48 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                 }
                 System.out.println("print time " + test);
                 try {
-                    JSONObject jObject = new JSONObject(test);
-                    JSONObject jObject2 = new JSONObject(jObject.get("user").toString());
-                    User usr = new User(jObject2.getString("fbid"), jObject2.getString("name"), jObject2.getInt("isPost"));
-                    cm = new Comment(jObject.getInt("commentId"), jObject.getString("detail"), jObject.getString("time"), usr);
+
+                    JSONObject jsonComment = new JSONObject(test);
+                    JSONObject jsonUsr = new JSONObject(jsonComment.get("user").toString());
+                    User usr = new User(jsonUsr.getString("fbid"), jsonUsr.getString("name"), jsonUsr.getInt("isPost"));
+                    cm = new Comment(jsonComment.getInt("commentId"), jsonComment.getString("detail")
+                            , jsonComment.getString("time"), usr);
+                    System.out.println("detail2 " + cm.getDetail());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 //Comment com = new Comment(0,holder.txtComment.getText().toString(),, new User(Login.id,Login.name));
                 feedItem.getCommentList().add(0, cm);
+                //System.out.println("detail " + cm.getDetail());
+                // System.out.println("checkcom" + feedItem.getCommentList().get(0).getDetail());
                 holder.commentCount.setText("" + feedItem.getCommentList().size());
                 holder.txtComment.setText(null);
-                notifyItemChanged(position);
+                //adapterComment.notifyItemInserted(0);
+                adapterComment.notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         });
+
+
+
+
         if(feedItem.getIsFeel() == 0){
             holder.smile.setImageResource(R.drawable.smile_unpress);
             holder.sad.setImageResource(R.drawable.sad_unpress);
         }
         else if(feedItem.getIsFeel() == 1){
             holder.smile.setImageResource(R.drawable.smile_press);
-            holder.sad.setImageResource(R.drawable.sad_unpress);
+            holder.sad.setImageResource(R.drawable.sad_unpress_disable);
         }
         else{
-            holder.smile.setImageResource(R.drawable.smile_unpress);
+            holder.smile.setImageResource(R.drawable.smile_unpress_disable);
             holder.sad.setImageResource(R.drawable.sad_press);
         }
-    }
 
+
+
+    }
 
 
     private String setParam(String detail,String fbid,int storyId) {
@@ -287,7 +338,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         new AsyncDeleteTask().execute("" + delStory.getStoryId(), delStory.getFbid(), "" + position);
     }
     public byte[] decodeImage(String imageDataString) {
-        return Base64.decode(imageDataString.replace('\n','\0'), Base64.URL_SAFE);
+        return Base64.decode(imageDataString, Base64.URL_SAFE);
     }
 
     public class AsyncIsFeelTask extends AsyncTask<String,Void,Integer>{
@@ -419,9 +470,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         @Override
         protected void onPostExecute(Integer integer) {
             feedItemList.remove(integer);
+            System.out.println("remove " + integer);
             //notifyItemRemoved(integer);
             notifyItemRemoved(integer);
-            notifyItemRangeChanged(integer,feedItemList.size());
+            //notifyItemRangeChanged(integer,feedItemList.size());
         }
     }
 

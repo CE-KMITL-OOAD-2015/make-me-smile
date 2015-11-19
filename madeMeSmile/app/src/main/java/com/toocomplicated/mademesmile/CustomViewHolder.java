@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
+import com.facebook.share.widget.ShareButton;
 
 /**
  * Created by Win8.1 on 26/10/2558.
@@ -32,6 +33,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     protected TextView sadCount;
     protected TextView commentCount;
     protected ImageView pic;
+    protected TextView time;
     protected RecyclerView commentView;
     protected RelativeLayout rl;
     public CustomViewHolder(View itemView) {
@@ -53,5 +55,8 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         this.rl = (RelativeLayout) itemView.findViewById(R.id.relative);
         this.commentCount = (TextView) itemView.findViewById(R.id.commentcount);
         this.setting = (ImageButton) itemView.findViewById(R.id.setting);
+        this.time = (TextView) itemView.findViewById(R.id.time);
     }
+
+
 }

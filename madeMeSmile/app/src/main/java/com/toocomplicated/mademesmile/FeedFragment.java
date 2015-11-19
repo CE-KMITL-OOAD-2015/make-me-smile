@@ -1,6 +1,16 @@
 package com.toocomplicated.mademesmile;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +22,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.share.model.ShareOpenGraphAction;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.model.ShareOpenGraphObject;
+import com.facebook.share.widget.ShareDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +47,7 @@ import java.util.List;
  */
 public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView mRecycler;
-    private RecyclerAdapter adapter;
+    public static RecyclerAdapter adapter;
     private EditText mTextSearch;
     private ImageButton mSearchButton;
     private ProgressBar bar;
@@ -37,6 +56,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<Story> feedList;
     private String mode;
     private String param;
+    ShareDialog shareDialog;
 
 
     @Nullable
@@ -61,6 +81,7 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 else {
                     mode = "searchStoryByLocationName";
                     param = "fbid=" + Login.id + "&locationName=" + des;
+                    hiddenKeyboard(getView());
                     new AsyncHttpTask().execute(mode, param);
                 }
             }
@@ -73,16 +94,23 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        hiddenKeyboard(getView());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Toast.makeText(getActivity(), "Refresh Feed...", Toast.LENGTH_SHORT).show();
+        hiddenKeyboard(getView());
         new AsyncHttpTask().execute(mode, param);
     }
 
     @Override
     public void onRefresh() {
         Toast.makeText(getActivity(), "Refresh Feed...", Toast.LENGTH_SHORT).show();
-        new AsyncHttpTask().execute(mode,param);
+        new AsyncHttpTask().execute(mode, param);
 
     }
 
@@ -125,12 +153,15 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         }
     }
+    private void hiddenKeyboard(View v) {
+        InputMethodManager keyboard = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
     public ArrayList<Story> getStoryList(String response) {
         ArrayList<Story> styList = new ArrayList<Story>();
         try {
             //JSONArray jsonArray2 = new JSONArray(response);
 
-            //Log.e("TEST", jsonArray2.getString(0));
 
             //JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
             //System.out.println(response);
@@ -186,5 +217,6 @@ public class FeedFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         return styList;
     }
+
 
 }

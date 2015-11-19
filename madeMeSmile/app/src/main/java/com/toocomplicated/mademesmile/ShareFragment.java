@@ -17,7 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.*;
-import android.util.Base64;
+//import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
  */
 public class ShareFragment extends Fragment {
     public String sq = null;
-    private ShareHelper helper;
     private ProfilePictureView profilePicture;
     private Story story;
     private String fbid;
@@ -66,7 +65,6 @@ public class ShareFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.activity_share2,container,false);
         FacebookSdk.sdkInitialize(getActivity());
-        helper = new ShareHelper(getActivity());
         location = new Location(0, "", "");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor editor = prefs.edit();
@@ -107,6 +105,7 @@ public class ShareFragment extends Fragment {
                     editor.clear();
                     editor.commit();
                     mLocationView.setText("Location : " + location.getName());
+                    Login.user.setPost();
                     FeedTabList.mPager.setCurrentItem(1);
                 }
             }
@@ -142,7 +141,6 @@ public class ShareFragment extends Fragment {
         }
         sq = "privacy="+ privacy + "&des=" + str + "&fbid=" + fbid + "&locationId=" + location.getId() + "&locationName=" +
                 location.getName() + "&address=" + location.getAddress() + "&img=" + pic;
-        Log.e("TEST2", sq);
 //        System.out.println("check pic " + imageToString(imagesPathList).toString());
     }
 

@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"
+        android:layout_height="55dp"
         android:background="@color/orange"
         android:paddingTop="0dp">
     </android.support.v7.widget.Toolbar>

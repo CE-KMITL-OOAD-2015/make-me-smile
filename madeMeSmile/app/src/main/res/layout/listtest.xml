@@ -26,8 +26,8 @@
 
                 <com.facebook.login.widget.ProfilePictureView
                     android:id="@+id/profile_picturefeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_margin="8dp"
                     facebook:com_facebook_preset_size="normal"></com.facebook.login.widget.ProfilePictureView>
 
@@ -55,6 +55,13 @@
                             android:layout_alignParentRight="true"
                             android:src="@drawable/settings" />
                     </RelativeLayout>
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:iconColor="@color/white"
+                        android:padding="10dp"
+                        android:textSize="10sp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,6 +143,8 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:textSize="16sp" />
+
+
             </LinearLayout>
 
             <view

@@ -21,7 +21,7 @@ public class LoginCheck extends AppCompatActivity {
         // data = getIntent().getExtras().getInt("check");
         if(hasLoggedIn)
         {
-            startActivity(new Intent(getApplicationContext(), FeedList.class));
+            startActivity(new Intent(getApplicationContext(), FeedTabList.class));
             finish();
         }
         else{

@@ -19,7 +19,7 @@ public class Comment implements Parcelable {
         this.commentId = 0;
     }
 
-    public Comment(int commentId,String detail, String time, User user) {
+    public Comment(int commentId,String detail, String time,User user) {
         this.detail = detail;
         this.time = time;
         this.user = user;

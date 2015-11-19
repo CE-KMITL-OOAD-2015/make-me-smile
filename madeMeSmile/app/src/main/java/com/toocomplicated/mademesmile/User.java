@@ -42,7 +42,11 @@ public class User implements Parcelable {
     {
         isPost = 1;
     }
+    public void setIsPost(int isPost){
+        this.isPost = isPost;
+    }
     public void notPost() { isPost = 0;}
+
 
     public User(Parcel in){
         readFromParcel(in);

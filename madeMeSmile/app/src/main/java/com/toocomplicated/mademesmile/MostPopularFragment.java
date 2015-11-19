@@ -49,6 +49,8 @@ public class MostPopularFragment extends Fragment implements SwipeRefreshLayout.
     public void onResume() {
         super.onResume();
         onRefresh();
+        Toast.makeText(getActivity(), "Refresh Feed...", Toast.LENGTH_SHORT).show();
+        new AsyncHttpTask().execute(mode, param);
     }
 
     @Override
@@ -109,7 +111,6 @@ public class MostPopularFragment extends Fragment implements SwipeRefreshLayout.
         try {
             //JSONArray jsonArray2 = new JSONArray(response);
 
-            //Log.e("TEST", jsonArray2.getString(0));
 
             //JSONObject jObject = new JSONObject("{" + "\"myArray\": " + response + "}");
             //System.out.println(response);

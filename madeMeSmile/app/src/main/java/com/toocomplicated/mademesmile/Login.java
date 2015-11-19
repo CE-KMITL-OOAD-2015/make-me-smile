@@ -22,6 +22,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.ProfilePictureView;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -41,6 +43,7 @@ public class Login extends ActionBarActivity {
     public static boolean login = false;
     public static String name;
     public static String id;
+    public static User user;
     private final String USER_AGENT = "Mozilla/5.0";
    // private Button postLinkButton;
   //  private Button postPictureButton;
@@ -115,7 +118,8 @@ public class Login extends ActionBarActivity {
                                 public void run() {
                                     try {
 
-                                        h.sendPost("user", "fbid=" + id + "&name=" + name);
+                                        JSONObject jUser  =  new JSONObject(h.sendPost("user", "fbid=" + id + "&name=" + name));
+                                        user = new User(jUser.getString("fbid"),jUser.getString("name"),jUser.getInt("isPost"));
                                     } catch (Exception e) {
                                         // TODO Auto-generated catch block
                                     }
@@ -204,107 +208,6 @@ public class Login extends ActionBarActivity {
 
 
 
-    /*private void performPublish(PendingAction action) {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-
-        if (accessToken != null) {
-            pendingAction = action;
-            handlePendingAction();
-        }
-    }*/
-
-   /* private void handlePendingAction() {
-        PendingAction oldPendingAction = pendingAction;
-        pendingAction = PendingAction.NONE;
-
-        switch (oldPendingAction) {
-            case NONE:
-                break;
-            case POST_LINK:
-                postLink();
-                break;
-            case POST_PICTURE:
-                postPicture();
-                break;
-        }
-    }*/
-
-    /*private void postLink() {
-        Profile profile = Profile.getCurrentProfile();
-        ShareLinkContent content = new ShareLinkContent.Builder()
-                .setContentTitle("3bugs.com")
-                .setContentDescription("บทเรียน บทความ และอบรมการเขียนแอพ Android")
-                .setContentUrl(Uri.parse("http://www.3bugs.com/"))
-                .setImageUrl(Uri.parse("http://www.3bugs.com/logo.png"))
-                .build();
-
-        if (profile != null && hasPublishPermission()) {
-            ShareApi.share(content, shareCallback);
-        } else {
-            pendingAction = PendingAction.POST_LINK;
-            LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList(PERMISSION));
-        }
-    }
-
-    private void postPicture() {
-        Profile profile = Profile.getCurrentProfile();
-
-        Bitmap picture = BitmapFactory.decodeFile(imageFilePath);
-        SharePhoto pictureToShare = new SharePhoto.Builder()
-                .setBitmap(picture)
-                .build();
-
-        ArrayList<SharePhoto> pictureList = new ArrayList<>();
-        pictureList.add(pictureToShare);
-
-        SharePhotoContent content = new SharePhotoContent.Builder()
-                .setPhotos(pictureList)
-                .build();
-
-        if (profile != null && hasPublishPermission()) {
-            ShareApi.share(content, shareCallback);
-        } else {
-            pendingAction = PendingAction.POST_PICTURE;
-            LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList(PERMISSION));
-        }
-    }
-
-    private boolean hasPublishPermission() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null && accessToken.getPermissions().contains("publish_actions");
-    }
-
-    private final static int PICK_IMAGE = 1;
-    private String imageFilePath;  // ชื่อพาธของไฟล์รูปภาพ
-
-    private void showPickPictureDialog() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "เลือกรูปภาพ"), PICK_IMAGE);
-    }
-
-    private void showConfirmPostPictureDialog() {
-        Bitmap picture = BitmapFactory.decodeFile(imageFilePath);
-        if (picture == null) {
-            Log.d(TAG, "Bitmap is NULL!!!");
-        }
-
-        final ImageView imageview = new ImageView(this);
-        imageview.setImageBitmap(picture);
-
-        new AlertDialog.Builder(this)
-                .setTitle("โพสต์รูปภาพนี้ลง Facebook ?")
-                .setView(imageview)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        performPublish(PendingAction.POST_PICTURE);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }*/
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -335,36 +238,5 @@ public class Login extends ActionBarActivity {
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
-       /*if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-
-            if (uri != null) {
-                String[] projection = { MediaStore.Images.Media.DATA };
-                Cursor cursor;
-
-                if (Build.VERSION.SDK_INT > 19) {
-                    // Will return "image:x*"
-                    String wholeID = DocumentsContract.getDocumentId(uri);
-                    // Split at colon, use second item in the array
-                    String id = wholeID.split(":")[1];
-                    // where id is equal to
-                    String sel = MediaStore.Images.Media._ID + "=?";
-
-                    cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            projection, sel, new String[] { id }, null);
-                }
-                else {
-                    cursor = getContentResolver().query(uri, projection, null, null, null);
-                }
-
-                cursor.moveToFirst();
-
-                imageFilePath = cursor.getString(0);
-                Log.d(TAG, "File path: " + imageFilePath);
-                showConfirmPostPictureDialog();
-
-                cursor.close();
-            }
-        }*/
     }
 }

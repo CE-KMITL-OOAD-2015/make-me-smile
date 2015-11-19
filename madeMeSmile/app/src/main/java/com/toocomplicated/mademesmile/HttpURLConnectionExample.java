@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.lang.Object.*;
 import java.util.LinkedList;
 import java.util.List;
-
 public class HttpURLConnectionExample {
 
     private  final String USER_AGENT = "Mozilla/5.0";
@@ -75,7 +74,7 @@ public class HttpURLConnectionExample {
         HttpURLConnection urlConn;
         DataOutputStream printout;
         DataInputStream input;
-        url = new URL("http://161.246.6.31:8080/"+mode);
+        url = new URL("http://203.151.92.173:8080/"+mode);
         urlConn = (HttpURLConnection) url.openConnection();
         urlConn.setDoInput(true);
         urlConn.setDoOutput(true);
